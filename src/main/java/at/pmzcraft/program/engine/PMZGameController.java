@@ -5,7 +5,7 @@ import at.pmzcraft.exception.WindowException;
 import at.pmzcraft.program.engine.utils.ResourceLoader;
 import at.pmzcraft.program.engine.utils.Synchronizer;
 import at.pmzcraft.program.engine.utils.Timer;
-import at.pmzcraft.program.game.ConcreteMainLogicImplementation;
+import at.pmzcraft.program.game.PMZGameHandler;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWImage;
 
@@ -33,9 +33,9 @@ public class PMZGameController implements Runnable {
     private final Synchronizer synchronizer;
 
     // Concrete BL
-    private final ConcreteMainLogicImplementation logicImplementation;
+    private final PMZGameHandler logicImplementation;
 
-    public PMZGameController(String title, int width, int height, boolean isVSyncEnabled, ConcreteMainLogicImplementation logicImplementation) {
+    public PMZGameController(String title, int width, int height, boolean isVSyncEnabled, PMZGameHandler logicImplementation) {
         window = new Window(title, width, height, isVSyncEnabled);
         this.logicImplementation = logicImplementation;
         timer = new Timer();
@@ -109,6 +109,7 @@ public class PMZGameController implements Runnable {
         double elapsedTime;
         double accumulator = 0d;
         float interval = 1.0f / 30.0f;
+//        int loop = 1;
 
         boolean running = true;
         while (running && !window.windowShouldClose()) {
@@ -124,6 +125,12 @@ public class PMZGameController implements Runnable {
             if (!window.isVSyncEnabled()) {
                 synchronizer.synchronize();
             }
+
+//            loop+=1;
+//
+//            if (loop>100) {
+//                running = false;
+//            }
         }
     }
 

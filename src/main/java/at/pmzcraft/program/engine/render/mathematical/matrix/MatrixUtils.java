@@ -13,12 +13,12 @@ public class MatrixUtils {
     public static Vector multiplyMatrixVector(Matrix m, Vector v) {
         Vector o = new Vector();
         float sum;
-        for (int i = 0; i < SIZE; i++) {
+        for (int col = 0; col < SIZE; col++) {
             sum = 0.0f;
-            for (int j = 0; j < SIZE; j++) {
-                sum += v.get(j) * m.get(j, i);
+            for (int row = 0; row < SIZE; row++) {
+                sum += v.get(row) * m.get(row, col);
             }
-            o.set(i, sum);
+            o.set(col, sum);
         }
         return o;
     }
@@ -54,31 +54,34 @@ public class MatrixUtils {
 
     public static Matrix createRotationMatrixX(float angleRad) {
         Matrix m = createIdentityMatrix();
-        //m.set(0, 0, 1);
-        m.set(1, 1, (float) cos(angleRad));
-        m.set(1, 2, (float) -sin(angleRad));
-        m.set(2, 1, (float) sin(angleRad));
-        m.set(2, 2, (float) cos(angleRad));
+        float sin = (float) sin(angleRad);
+        float cos = (float) cos(angleRad);
+        m.set(1, 1, cos);
+        m.set(1, 2, -sin);
+        m.set(2, 1, sin);
+        m.set(2, 2, cos);
         return m;
     }
 
     public static Matrix createRotationMatrixY(float angleRad) {
         Matrix m = createIdentityMatrix();
-        m.set(0, 0, (float) cos(angleRad));
-        m.set(0, 2, (float) sin(angleRad));
-        //m.set(1, 1, 1);
-        m.set(2, 0, (float) -sin(angleRad));
-        m.set(2, 2, (float) cos(angleRad));
+        float sin = (float) sin(angleRad);
+        float cos = (float) cos(angleRad);
+        m.set(0, 0, cos);
+        m.set(0, 2, sin);
+        m.set(2, 0, -sin);
+        m.set(2, 2, cos);
         return m;
     }
 
     public static Matrix createRotationMatrixZ(float angleRad) {
         Matrix m = createIdentityMatrix();
-        m.set(0, 0, (float) cos(angleRad));
-        m.set(0, 1, (float) -sin(angleRad));
-        m.set(1, 0, (float) sin(angleRad));
-        m.set(1, 1, (float) cos(angleRad));
-        //m.set(2, 2, 1);
+        float sin = (float) sin(angleRad);
+        float cos = (float) cos(angleRad);
+        m.set(0, 0, cos);
+        m.set(0, 1, -sin);
+        m.set(1, 0, sin);
+        m.set(1, 1, cos);
         return m;
     }
 
@@ -93,17 +96,15 @@ public class MatrixUtils {
     public static Matrix multiply(Matrix m1, Matrix m2) {
         Matrix m = new Matrix();
         float tmp;
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
+        for (int row = 0; row < SIZE; row++) {
+            for (int col = 0; col < SIZE; col++) {
                 tmp = 0.0f;
                 for (int k = 0; k < SIZE; k++) {
-                    tmp += m1.get(i , k) * m2.get(k, j);
+                    tmp += m1.get(row , k) * m2.get(k, col);
                 }
-                m.set(i, j ,tmp);
+                m.set(row, col ,tmp);
             }
         }
         return m;
     }
-
-
 }

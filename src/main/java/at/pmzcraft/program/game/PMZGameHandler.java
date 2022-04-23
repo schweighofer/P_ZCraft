@@ -1,14 +1,12 @@
 package at.pmzcraft.program.game;
 
 import at.pmzcraft.exception.ShaderException;
-import at.pmzcraft.exception.shader.*;
 import at.pmzcraft.program.engine.Window;
 import at.pmzcraft.program.engine.render.Mesh;
 import at.pmzcraft.program.engine.render.Renderer;
 import at.pmzcraft.program.engine.render.mathematical.vector.Vector;
 import at.pmzcraft.program.game.world.gameitem.blocks.Block;
-import at.pmzcraft.program.game.world.gameitem.blocks.blocktypes.GrassBlock;
-import org.joml.Vector3f;
+import at.pmzcraft.program.game.world.gameitem.blocks.blocktypes.*;
 
 import java.io.IOException;
 
@@ -16,7 +14,7 @@ import static at.pmzcraft.program.engine.render.mathematical.vector.Vector.*;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.glViewport;
 
-public class ConcreteMainLogicImplementation {
+public class PMZGameHandler {
 
     private int displayXInc = 0;
     private int displayYInc = 0;
@@ -26,17 +24,17 @@ public class ConcreteMainLogicImplementation {
     private final Renderer renderer;
     private Block[] blocks;
 
-    public ConcreteMainLogicImplementation() {
+    public PMZGameHandler() {
         renderer = new Renderer();
     }
 
     public void init() throws ShaderException, IOException {
         renderer.init();
         float[] positions = new float[]{
-                -0.5f, 0.5f, 0.0f,
-                -0.5f, -0.5f, 0.0f,
-                0.5f, -0.5f, 0.0f,
-                0.5f, 0.5f, 0.0f,
+                -0.5f, 0.5f, 0.5f,
+                -0.5f, -0.5f, 0.5f,
+                0.5f, -0.5f, 0.5f,
+                0.5f, 0.5f, 0.5f,
         };
         float[] colors = new float[]{
                 0.5f, 0.0f, 0.0f,
@@ -49,7 +47,7 @@ public class ConcreteMainLogicImplementation {
         };
         Mesh mesh = new Mesh(positions, colors, indices);
         Block block = new GrassBlock(mesh);
-        block.setPosition(0, 0, -5);
+        block.setPosition(0, 0, -2);
         blocks = new Block[] {block};
     }
 

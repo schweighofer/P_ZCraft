@@ -18,27 +18,34 @@ public class Matrix {
         this.matrix = matrix;
     }
 
-    public float get(int i1, int i2) {
-        return matrix[i1][i2];
+    /**
+     * @param row Zeile
+     * @param col Spalte
+     */
+    public float get(int row, int col) {
+        return matrix[row][col];
     }
 
-    public float[][] getArray() {
-        return matrix;
+    /**
+     * @param row Zeile
+     * @param col Spalte
+     */
+    public void set(int row, int col, float value) {
+        matrix[row][col] = value;
     }
 
     public FloatBuffer toFloatBuffer() {
         float[] tmp = new float[SIZE * SIZE];
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                tmp[i * 4 + j] = matrix[i][j];
+        for (int col = 0; col < SIZE; col++) {
+            for (int row = 0; row < SIZE; row++) {
+                tmp[col * 4 + row] = matrix[row][col];
             }
         }
         return floatArrayToBuffer(tmp);
     }
 
     private FloatBuffer floatArrayToBuffer(float[] floatArray) {
-        ByteBuffer byteBuffer = ByteBuffer
-                .allocateDirect(floatArray.length * 4);
+        ByteBuffer byteBuffer = ByteBuffer.allocateDirect(floatArray.length * 4);
         byteBuffer.order(ByteOrder.nativeOrder());
         FloatBuffer floatBuffer = byteBuffer.asFloatBuffer();
         floatBuffer.put(floatArray);
@@ -46,16 +53,12 @@ public class Matrix {
         return floatBuffer;
     }
 
-    public void set(int i1, int i2, float value) {
-        matrix[i1][i2] = value;
-    }
-
     @Override
     public String toString() {
         String result = "";
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                result += " | " + String.format("%10f", matrix[i][j]);
+        for (int row = 0; row < SIZE; row++) {
+            for (int col = 0; col < SIZE; col++) {
+                result += " | " + String.format("%10f", matrix[row][col]);
             }
             result += "\n";
         }

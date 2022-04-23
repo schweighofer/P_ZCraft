@@ -1,5 +1,7 @@
 package at.pmzcraft.program.engine.render.mathematical.vector;
 
+import java.util.Arrays;
+
 public class Vector {
     public static  final int SIZE = 4;
 
@@ -34,6 +36,13 @@ public class Vector {
 
     public void set(int index, float value) {
         this.coordinates[index] = value;
+    }
+
+    @Override
+    public String toString() {
+        return "Vector{" +
+                "coordinates=" + Arrays.toString(coordinates) +
+                '}';
     }
 }
 
