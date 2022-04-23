@@ -91,6 +91,9 @@ public class Window {
 
         // Set the clear color
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+
+        // Enable Depth-Testing so that triangles are drawn in the correct order
+        glEnable(GL_DEPTH_TEST);
     }
 
 

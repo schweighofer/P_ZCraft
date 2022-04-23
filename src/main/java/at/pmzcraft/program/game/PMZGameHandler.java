@@ -20,6 +20,7 @@ public class PMZGameHandler {
     private int displayYInc = 0;
     private int displayZInc = 0;
     private int scaleInc = 0;
+    private int rotationFactor = 100;
 
     private final Renderer renderer;
     private Block[] blocks;
@@ -30,20 +31,47 @@ public class PMZGameHandler {
 
     public void init() throws ShaderException, IOException {
         renderer.init();
-        float[] positions = new float[]{
-                -0.5f, 0.5f, 0.5f,
-                -0.5f, -0.5f, 0.5f,
-                0.5f, -0.5f, 0.5f,
-                0.5f, 0.5f, 0.5f,
+        float[] positions = new float[] {
+                // VO
+                -0.5f,  0.5f,  0.5f,
+                // V1
+                -0.5f, -0.5f,  0.5f,
+                // V2
+                0.5f, -0.5f,  0.5f,
+                // V3
+                0.5f,  0.5f,  0.5f,
+                // V4
+                -0.5f,  0.5f, -0.5f,
+                // V5
+                0.5f,  0.5f, -0.5f,
+                // V6
+                -0.5f, -0.5f, -0.5f,
+                // V7
+                0.5f, -0.5f, -0.5f,
         };
         float[] colors = new float[]{
                 0.5f, 0.0f, 0.0f,
                 0.0f, 0.5f, 0.0f,
                 0.0f, 0.0f, 0.5f,
                 0.0f, 0.5f, 0.5f,
+                0.5f, 0.0f, 0.0f,
+                0.0f, 0.5f, 0.0f,
+                0.0f, 0.0f, 0.5f,
+                0.0f, 0.5f, 0.5f,
         };
-        int[] indices = new int[]{
+        int[] indices = new int[] {
+                // Front face
                 0, 1, 3, 3, 1, 2,
+                // Top Face
+                4, 0, 3, 5, 4, 3,
+                // Right face
+                3, 2, 7, 5, 3, 7,
+                // Left face
+                6, 1, 0, 6, 0, 4,
+                // Bottom face
+                2, 1, 6, 2, 6, 7,
+                // Back face
+                7, 6, 4, 7, 4, 5,
         };
         Mesh mesh = new Mesh(positions, colors, indices);
         Block block = new GrassBlock(mesh);
@@ -72,6 +100,10 @@ public class PMZGameHandler {
             scaleInc = -1;
         } else if (window.isKeyPressed(GLFW_KEY_X)) {
             scaleInc = 1;
+        } else if (window.isKeyPressed(GLFW_KEY_W)) {
+            rotationFactor++;
+        } else if (window.isKeyPressed(GLFW_KEY_S)) {
+            rotationFactor--;
         }
     }
 
@@ -93,11 +125,11 @@ public class PMZGameHandler {
             block.setScale(scale);
 
             // Update rotation angle
-            float rotation = block.getRotation().get(Z) + 1.5f;
+            float rotation = block.getRotation().get(Z) + (rotationFactor / 100);
             if ( rotation > 360 ) {
                 rotation = 0;
             }
-            block.setRotation(0, 0, rotation);
+            block.setRotation(rotation, rotation, rotation);
         }
     }
 
