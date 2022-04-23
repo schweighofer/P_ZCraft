@@ -76,7 +76,6 @@ public class PMZGameHandler {
     }
 
     public void update(float interval) {
-
         for (Block block : blocks) {
             // Update position
             Vector pos = block.getPosition();
