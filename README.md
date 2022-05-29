@@ -1,10 +1,17 @@
-### ReadMe
-#
+ReadMe
+------
+###
 Anmerkungen
-- keiner greift die Render Klasse an
-- kroatische Hände weg vom low-level Code!!!
-#
+- gesamtes Engine-Package bitte nur angreifen, wenn man versteht was man da tut!
+- Patrik, am besten das Engine-Packet ignorieren
+- PNGDecoder selbst implementieren?
+#####
+TODOs
+- Vektoren: W wird benötigt?
+- Mesh / Texture handler Klasse (nicht in main)
+- Path Handler (nicht alles irgendwo) # Properties File LÖSUNG!!! # 
+#####
 Dokumentierte Klassen
 - PMZCraftLauncher benötigt keine Doku / Temporäre Klasse
 - Window
-- ShaderProgram // doch nicht haha
+- Engine-Packet mehr oder minder abgeschlossen

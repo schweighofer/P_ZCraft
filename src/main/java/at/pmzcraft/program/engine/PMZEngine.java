@@ -1,8 +1,9 @@
 package at.pmzcraft.program.engine;
 
-import at.pmzcraft.exception.ShaderException;
-import at.pmzcraft.exception.TextureException;
-import at.pmzcraft.exception.WindowException;
+import at.pmzcraft.exception.PMZException;
+import at.pmzcraft.exception.general.ShaderException;
+import at.pmzcraft.exception.general.TextureException;
+import at.pmzcraft.exception.general.WindowException;
 import at.pmzcraft.program.engine.utils.ResourceLoader;
 import at.pmzcraft.program.engine.utils.Synchronizer;
 import at.pmzcraft.program.engine.utils.Timer;
@@ -51,13 +52,15 @@ public class PMZEngine implements Runnable {
         try {
             init();
             loop();
-        } catch (WindowException | ShaderException | TextureException | IOException | InterruptedException e) {
+        } catch (PMZException | IOException | InterruptedException e) {
             e.printStackTrace();
         } finally {
             // Cleanup the shader program
             cleanup();
             // Cleanup the window after the game is done
             window.close();
+
+            // TODO: return to menu?
         }
     }
 
@@ -65,52 +68,14 @@ public class PMZEngine implements Runnable {
         window.init();
         timer.init();
         logicImplementation.init();
-
-        initWindowIcon();
     }
 
-    private void initWindowIcon() {
-        ByteBuffer icon16;
-        ByteBuffer icon32;
-        try {
-            icon16 = ResourceLoader.ioResourceToByteBuffer(Path.of("resources", "title_logo.png"), 2048);
-            icon32 = ResourceLoader.ioResourceToByteBuffer(Path.of("resources", "title_logo.png"), 4096);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
 
-        IntBuffer width = memAllocInt(1);
-        IntBuffer height = memAllocInt(1);
-        IntBuffer comp = memAllocInt(1);
-
-        try ( GLFWImage.Buffer icons = GLFWImage.malloc(2) ) {
-            ByteBuffer pixels16 = stbi_load_from_memory(icon16, width, height, comp, 4);
-            icons
-                    .position(0)
-                    .width(width.get(0))
-                    .height(height.get(0))
-                    .pixels(pixels16);
-
-            ByteBuffer pixels32 = stbi_load_from_memory(icon32, width, height, comp, 4);
-            icons
-                    .position(1)
-                    .width(width.get(0))
-                    .height(height.get(0))
-                    .pixels(pixels32);
-
-            icons.position(0);
-            glfwSetWindowIcon(window.getHandle(), icons);
-
-            stbi_image_free(pixels32);
-            stbi_image_free(pixels16);
-        }
-    }
 
     private void loop() throws InterruptedException {
         double elapsedTime;
         double accumulator = 0d;
         float interval = 1.0f / 30.0f;
-//        int loop = 1;
 
         boolean running = true;
         while (running && !window.windowShouldClose()) {
@@ -126,12 +91,6 @@ public class PMZEngine implements Runnable {
             if (!window.isVSyncEnabled()) {
                 synchronizer.synchronize();
             }
-
-//            loop+=1;
-//
-//            if (loop>100) {
-//                running = false;
-//            }
         }
     }
 

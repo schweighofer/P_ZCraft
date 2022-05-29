@@ -1,35 +1,41 @@
 package at.pmzcraft.program.game;
 
-import at.pmzcraft.exception.ShaderException;
-import at.pmzcraft.exception.TextureException;
+import at.pmzcraft.exception.general.ShaderException;
+import at.pmzcraft.exception.general.TextureException;
+import at.pmzcraft.program.engine.Camera;
 import at.pmzcraft.program.engine.Window;
-import at.pmzcraft.program.engine.graphical.Texture;
+import at.pmzcraft.program.engine.input.KeyboardInputHandler;
+import at.pmzcraft.program.engine.render.Texture;
 import at.pmzcraft.program.engine.render.Mesh;
 import at.pmzcraft.program.engine.render.Renderer;
 import at.pmzcraft.program.engine.render.mathematical.vector.Vector;
+import at.pmzcraft.program.engine.render.mathematical.vector.VectorUtils;
 import at.pmzcraft.program.game.world.gameitem.blocks.Block;
 import at.pmzcraft.program.game.world.gameitem.blocks.blocktypes.*;
 
 import java.io.IOException;
 import java.nio.file.Path;
 
-import static at.pmzcraft.program.engine.render.mathematical.vector.Vector.*;
-import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11.glViewport;
-
 public class PMZGame {
 
-    private int displayXInc = 0;
-    private int displayYInc = 0;
-    private int displayZInc = 0;
-    private int scaleInc = 0;
-    private int rotationFactor = 100;
+    private Vector cameraPosition;
+    private Vector cameraRotation;
+    private final Camera camera;
+
+    private static final float CAMERA_STEP_SENSITIVITY = 0.05f;
+    private static final float CAMERA_ROTATION_SENSITIVITY = 0.2f;
+
+    private final KeyboardInputHandler keyboardInputHandler;
 
     private final Renderer renderer;
     private Block[] blocks;
 
     public PMZGame() {
         renderer = new Renderer();
+        camera = new Camera();
+        cameraPosition = new Vector();
+        cameraRotation = new Vector();
+        keyboardInputHandler = new KeyboardInputHandler(this);
     }
 
     public void init() throws ShaderException, TextureException,IOException {
@@ -131,71 +137,39 @@ public class PMZGame {
                 4, 6, 7, 5, 4, 7,};
         Texture texture = new Texture(Path.of("src", "main", "resources", "game", "texture", "grass_block.png"));
         Mesh mesh = new Mesh(positions, textCoords, indices, texture);
-        Block block = new GrassBlock(mesh);
-        block.setPosition(0, 0, -2);
-        blocks = new Block[] {block};
+
+        Block b1 = new GrassBlock(mesh);
+        b1.setScale(0.5f);
+        b1.setPosition(0, 0, -2);
+
+        Block b2 = new GrassBlock(mesh);
+        b2.setScale(0.5f);
+        b2.setPosition(0.5f, 0, -2);
+
+        Block b3 = new GrassBlock(mesh);
+        b3.setScale(0.5f);
+        b3.setPosition(0, 0.5f, -2.5f);
+
+        Block b4 = new GrassBlock(mesh);
+        b4.setScale(0.5f);
+        b4.setPosition(0.5f, 0.5f, -2.5f);
+
+        blocks = new Block[] {b1, b2, b3, b4};
     }
 
     public void input(Window window) {
-        displayYInc = 0;
-        displayXInc = 0;
-        displayZInc = 0;
-        scaleInc = 0;
-        if (window.isKeyPressed(GLFW_KEY_UP)) {
-            displayYInc = 1;
-        } else if (window.isKeyPressed(GLFW_KEY_DOWN)) {
-            displayYInc = -1;
-        } else if (window.isKeyPressed(GLFW_KEY_LEFT)) {
-            displayXInc = -1;
-        } else if (window.isKeyPressed(GLFW_KEY_RIGHT)) {
-            displayXInc = 1;
-        } else if (window.isKeyPressed(GLFW_KEY_A)) {
-            displayZInc = -1;
-        } else if (window.isKeyPressed(GLFW_KEY_Q)) {
-            displayZInc = 1;
-        } else if (window.isKeyPressed(GLFW_KEY_Z)) {
-            scaleInc = -1;
-        } else if (window.isKeyPressed(GLFW_KEY_X)) {
-            scaleInc = 1;
-        } else if (window.isKeyPressed(GLFW_KEY_W)) {
-            rotationFactor++;
-        } else if (window.isKeyPressed(GLFW_KEY_S)) {
-            rotationFactor--;
-        }
+        cameraPosition = keyboardInputHandler.inputMovement(window);
+        //cameraRotation = keyboardInputHandler.inputRotation(window);
     }
 
     public void update(float interval) {
-        for (Block block : blocks) {
-            // Update position
-            Vector pos = block.getPosition();
-            float posX = pos.get(X) + displayXInc * 0.01f;
-            float posY = pos.get(Y) + displayYInc * 0.01f;
-            float posZ = pos.get(Z) + displayZInc * 0.01f;
-            block.setPosition(posX, posY, posZ);
-
-            // Update scale
-            float scale = block.getScale();
-            scale += scaleInc * 0.05f;
-            if ( scale < 0 ) {
-                scale = 0;
-            }
-            block.setScale(scale);
-
-            // Update rotation angle
-            float rotation = block.getRotation().get(Z) + (rotationFactor / 100);
-            if ( rotation > 360 ) {
-                rotation = 0;
-            }
-            block.setRotation(rotation, rotation, rotation);
-        }
+        camera.movePosition(VectorUtils.mathScalarProduct(cameraPosition, CAMERA_STEP_SENSITIVITY));
+        //camera.moveRotation(VectorUtils.mathScalarProduct(cameraRotation, CAMERA_ROTATION_SENSITIVITY));
+        // Other stuff mouse movement ersatz haha
     }
 
     public void render(Window window) {
-        if (window.wasResized()) {
-            glViewport(0, 0, window.getWidth(), window.getHeight());
-        }
-        
-        renderer.render(window, blocks);
+        renderer.render(window, camera, blocks);
     }
 
     public void cleanup() {
@@ -203,5 +177,13 @@ public class PMZGame {
         for (Block block : blocks) {
             block.getMesh().cleanup();
         }
+    }
+
+    public Vector getCameraPosition() {
+        return cameraPosition;
+    }
+
+    public Camera getCamera() {
+        return camera;
     }
 }

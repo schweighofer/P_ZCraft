@@ -1,5 +1,7 @@
 package at.pmzcraft.program.engine.render.mathematical.vector;
 
+import at.pmzcraft.program.engine.render.mathematical.matrix.Matrix;
+
 import static at.pmzcraft.program.engine.render.mathematical.vector.Vector.SIZE;
 
 public class VectorUtils {
@@ -32,6 +34,13 @@ public class VectorUtils {
         Vector v = new Vector();
         for (int i = 0; i < SIZE; i++) {
             v.set(i, v1.get(i) / v2.get(i));
+        }
+        return v;
+    }
+
+    public static Vector mathScalarProduct(Vector v, float scalar) {
+        for (int i = 0; i < SIZE; i++) {
+            v.set(i, v.get(i) * scalar);
         }
         return v;
     }

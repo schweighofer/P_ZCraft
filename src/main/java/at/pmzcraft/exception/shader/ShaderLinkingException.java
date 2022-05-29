@@ -1,6 +1,6 @@
 package at.pmzcraft.exception.shader;
 
-import at.pmzcraft.exception.ShaderException;
+import at.pmzcraft.exception.general.ShaderException;
 
 public class ShaderLinkingException extends ShaderException {
 

@@ -13,7 +13,7 @@ public class PMZCraftLauncher {
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         boolean isVSyncEnabled = true;
         PMZGame concreteLogic = new PMZGame();
-        PMZEngine controller = new PMZEngine(title, 600, 480, isVSyncEnabled, concreteLogic);
+        PMZEngine controller = new PMZEngine(title, screen.width / 2, screen.height / 2, isVSyncEnabled, concreteLogic);
         Thread mainGameThread = new Thread(controller);
         mainGameThread.setName(threadName);
         mainGameThread.start();

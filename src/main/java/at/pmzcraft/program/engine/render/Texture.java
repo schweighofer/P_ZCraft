@@ -1,10 +1,10 @@
-package at.pmzcraft.program.engine.graphical;
+package at.pmzcraft.program.engine.render;
 
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.nio.file.Path;
 
-import at.pmzcraft.exception.TextureException;
+import at.pmzcraft.exception.general.TextureException;
 import at.pmzcraft.exception.texture.LoadTextureException;
 import org.lwjgl.system.MemoryStack;
 

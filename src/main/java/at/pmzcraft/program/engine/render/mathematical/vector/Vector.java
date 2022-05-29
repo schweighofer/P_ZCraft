@@ -1,8 +1,11 @@
 package at.pmzcraft.program.engine.render.mathematical.vector;
 
+import at.pmzcraft.program.engine.render.mathematical.MathematicalCloneable;
+import at.pmzcraft.program.engine.render.mathematical.MathematicalStructure;
+
 import java.util.Arrays;
 
-public class Vector {
+public class Vector extends MathematicalStructure implements MathematicalCloneable {
     public static  final int SIZE = 4;
 
     public static final int X = 0;
@@ -12,6 +15,9 @@ public class Vector {
 
     private float[] coordinates = new float[4];
 
+    /**
+     * @return Nullvector
+     */
     public Vector() {
         coordinates[X] = 0.0f;
         coordinates[Y] = 0.0f;
@@ -24,6 +30,13 @@ public class Vector {
         coordinates[Y] = y;
         coordinates[Z] = z;
         coordinates[W] = w;
+    }
+
+    public Vector(float[] coordinates) {
+        this.coordinates[X] = coordinates[X];
+        this.coordinates[Y] = coordinates[Y];
+        this.coordinates[Z] = coordinates[Z];
+        this.coordinates[W] = 1.0f;
     }
 
     public float get(int index) {
@@ -43,6 +56,12 @@ public class Vector {
         return "Vector{" +
                 "coordinates=" + Arrays.toString(coordinates) +
                 '}';
+    }
+
+
+    @Override
+    public MathematicalStructure clone() {
+        return new Vector(Arrays.copyOf(coordinates, coordinates.length));
     }
 }
 

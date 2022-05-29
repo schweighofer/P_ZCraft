@@ -2,20 +2,30 @@ package at.pmzcraft.program.engine;
 
 import at.pmzcraft.exception.window.GLFWInitializationException;
 import at.pmzcraft.exception.window.WindowCreationException;
+import at.pmzcraft.program.engine.utils.ResourceLoader;
 import org.lwjgl.glfw.GLFWErrorCallback;
+import org.lwjgl.glfw.GLFWImage;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
+
+import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
+import java.nio.file.Path;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.glfw.GLFW.glfwShowWindow;
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.stb.STBImage.stbi_image_free;
+import static org.lwjgl.stb.STBImage.stbi_load_from_memory;
 import static org.lwjgl.system.MemoryUtil.NULL;
+import static org.lwjgl.system.MemoryUtil.memAllocInt;
 
 // Wrapper Class for GLFWs window handle
 public class Window {
 
     private final String title;
+    private WindowIcon icon;
     private int width;
     private int height;
     private long glfwWindowHandle;
@@ -94,6 +104,12 @@ public class Window {
 
         // Enable Depth-Testing so that triangles are drawn in the correct order
         glEnable(GL_DEPTH_TEST);
+
+        // Set the WindowIcon (this should be done last)
+        this.icon = new WindowIcon(this);
+        // TODO: Extract Paths into Structure
+        Path resources = Path.of("resources", "title_logo.png");
+        icon.initWindowIcon(resources);
     }
 
 
@@ -153,5 +169,55 @@ public class Window {
             return true;
         }
         return false;
+    }
+}
+
+class WindowIcon {
+
+    private Window window;
+
+    public WindowIcon(Window window) {
+        this.window = window;
+    }
+
+    public void setWindow(Window window) {
+        this.window = window;
+    }
+
+    void initWindowIcon(Path path) {
+        ByteBuffer icon16;
+        ByteBuffer icon32;
+        try {
+            icon16 = ResourceLoader.ioResourceToByteBuffer(path, 2048);
+            icon32 = ResourceLoader.ioResourceToByteBuffer(path, 4096);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        IntBuffer width = memAllocInt(1);
+        IntBuffer height = memAllocInt(1);
+        IntBuffer comp = memAllocInt(1);
+
+        try ( GLFWImage.Buffer icons = GLFWImage.malloc(2) ) {
+            ByteBuffer pixels16 = stbi_load_from_memory(icon16, width, height, comp, 4);
+            icons
+                    .position(0)
+                    .width(width.get(0))
+                    .height(height.get(0))
+                    .pixels(pixels16);
+
+            ByteBuffer pixels32 = stbi_load_from_memory(icon32, width, height, comp, 4);
+            icons
+                    .position(1)
+                    .width(width.get(0))
+                    .height(height.get(0))
+                    .pixels(pixels32);
+
+            icons.position(0);
+            glfwSetWindowIcon(window.getHandle(), icons);
+
+            stbi_image_free(pixels32);
+            stbi_image_free(pixels16);
+        }
     }
 }

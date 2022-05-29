@@ -3,12 +3,12 @@ package at.pmzcraft.program.engine.render.mathematical.matrix;
 import at.pmzcraft.program.engine.render.mathematical.vector.Vector;
 
 import static at.pmzcraft.program.engine.render.mathematical.matrix.Matrix.SIZE;
+import static at.pmzcraft.program.engine.render.mathematical.utils.AngleUtils.*;
 import static at.pmzcraft.program.engine.render.mathematical.vector.Vector.*;
-import static java.lang.Math.*;
 
 public class MatrixUtils {
 
-    public static final float PI = (float) (Math.PI);
+
 
     public static Vector multiplyMatrixVector(Matrix m, Vector v) {
         Vector o = new Vector();
@@ -23,6 +23,8 @@ public class MatrixUtils {
         return o;
     }
 
+    // TODO: make them transform a matrix, instead of creating a new one, Garbage collection
+
     public static Matrix createIdentityMatrix() {
         Matrix m = new Matrix();
         for (int i = 0; i < SIZE; i++) {
@@ -33,7 +35,7 @@ public class MatrixUtils {
 
     public static Matrix createProjectionMatrix(float fov, float aspectRatio, float zNear, float zFar) {
         Matrix m = new Matrix();
-        float calculatedFov = (float) (1 / tan(fov / 2));
+        float calculatedFov = (1 / tan(fov / 2));
         float zm = zFar - zNear;
         float zp = zFar + zNear;
         m.set(0, 0, calculatedFov / aspectRatio);
@@ -54,8 +56,8 @@ public class MatrixUtils {
 
     public static Matrix createRotationMatrixX(float angleRad) {
         Matrix m = createIdentityMatrix();
-        float sin = (float) sin(angleRad);
-        float cos = (float) cos(angleRad);
+        float sin = sin(angleRad);
+        float cos = cos(angleRad);
         m.set(1, 1, cos);
         m.set(1, 2, -sin);
         m.set(2, 1, sin);
@@ -65,8 +67,8 @@ public class MatrixUtils {
 
     public static Matrix createRotationMatrixY(float angleRad) {
         Matrix m = createIdentityMatrix();
-        float sin = (float) sin(angleRad);
-        float cos = (float) cos(angleRad);
+        float sin = sin(angleRad);
+        float cos = cos(angleRad);
         m.set(0, 0, cos);
         m.set(0, 2, sin);
         m.set(2, 0, -sin);
@@ -76,8 +78,8 @@ public class MatrixUtils {
 
     public static Matrix createRotationMatrixZ(float angleRad) {
         Matrix m = createIdentityMatrix();
-        float sin = (float) sin(angleRad);
-        float cos = (float) cos(angleRad);
+        float sin = sin(angleRad);
+        float cos = cos(angleRad);
         m.set(0, 0, cos);
         m.set(0, 1, -sin);
         m.set(1, 0, sin);

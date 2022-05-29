@@ -1,10 +1,14 @@
 package at.pmzcraft.program.engine.render.mathematical.matrix;
 
+import at.pmzcraft.program.engine.render.mathematical.MathematicalCloneable;
+import at.pmzcraft.program.engine.render.mathematical.MathematicalStructure;
+
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.util.Arrays;
 
-public class Matrix {
+public class Matrix extends MathematicalStructure implements MathematicalCloneable {
 
     public static final int SIZE = 4;
 
@@ -64,5 +68,10 @@ public class Matrix {
         }
         result += "\n------------------------------------------";
         return result;
+    }
+
+    @Override
+    public MathematicalStructure clone() {
+        return new Matrix(Arrays.stream(matrix).map(a -> Arrays.copyOf(a, a.length)).toArray(float[][]::new));
     }
 }

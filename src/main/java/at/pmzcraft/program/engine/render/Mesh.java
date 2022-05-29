@@ -1,6 +1,5 @@
 package at.pmzcraft.program.engine.render;
 
-import at.pmzcraft.program.engine.graphical.Texture;
 import org.lwjgl.system.MemoryUtil;
 
 import java.nio.FloatBuffer;

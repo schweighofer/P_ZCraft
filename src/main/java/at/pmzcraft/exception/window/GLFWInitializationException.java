@@ -1,6 +1,6 @@
 package at.pmzcraft.exception.window;
 
-import at.pmzcraft.exception.WindowException;
+import at.pmzcraft.exception.general.WindowException;
 
 public class GLFWInitializationException extends WindowException {
 

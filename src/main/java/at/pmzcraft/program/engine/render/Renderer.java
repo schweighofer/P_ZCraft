@@ -1,7 +1,8 @@
 package at.pmzcraft.program.engine.render;
 
 
-import at.pmzcraft.exception.ShaderException;
+import at.pmzcraft.exception.general.ShaderException;
+import at.pmzcraft.program.engine.Camera;
 import at.pmzcraft.program.engine.Window;
 import at.pmzcraft.program.engine.graphical.ShaderProgram;
 import at.pmzcraft.program.engine.graphical.Transformation;
@@ -37,16 +38,16 @@ public class Renderer {
         shaderProgram.link();
 
         // Create uniforms for world and projection matrices
-        shaderProgram.createUniform("projectionMatrix");
-        shaderProgram.createUniform("worldMatrix");
-        shaderProgram.createUniform("texture_sampler");
+        shaderProgram.createUniform("m_projectionMatrix");
+        shaderProgram.createUniform("m_modelViewMatrix");
+        shaderProgram.createUniform("t_textureSampler");
     }
 
     public void clear() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
-    public void render(Window window, Block[] blocks) {
+    public void render(Window window, Camera camera, Block[] blocks) {
         clear();
 
         if (window.wasResized()) {
@@ -55,18 +56,19 @@ public class Renderer {
 
         shaderProgram.bind();
 
+        // Update the projection matrix
         Matrix projectionMatrix = transformation.getProjectionMatrix(FOV, (float) window.getWidth() / (float) window.getHeight(), Z_NEAR, Z_FAR);
-        shaderProgram.setUniform("projectionMatrix", projectionMatrix);
+        shaderProgram.setUniform("m_projectionMatrix", projectionMatrix);
 
-        shaderProgram.setUniform("texture_sampler", 0);
+        // Update view matrix
+        Matrix viewMatrix = transformation.getViewMatrix(camera);
+
+        shaderProgram.setUniform("t_textureSampler", 0);
 
         for (Block block : blocks) {
-            Matrix worldMatrix = transformation.getWorldMatrix(
-                    block.getPosition(),
-                    block.getRotation(),
-                    block.getScale()
-            );
-            shaderProgram.setUniform("worldMatrix", worldMatrix);
+            Matrix modelViewMatrix = transformation.getModelViewMatrix(block, viewMatrix);
+
+            shaderProgram.setUniform("m_modelViewMatrix", modelViewMatrix);
             block.getMesh().render();
         }
 
