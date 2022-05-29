@@ -1,7 +1,5 @@
 package at.pmzcraft.program.engine.utils;
 
-import org.lwjgl.BufferUtils;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;

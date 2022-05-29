@@ -2,7 +2,6 @@ package at.pmzcraft.program.engine.render;
 
 
 import at.pmzcraft.exception.ShaderException;
-import at.pmzcraft.exception.shader.*;
 import at.pmzcraft.program.engine.Window;
 import at.pmzcraft.program.engine.graphical.ShaderProgram;
 import at.pmzcraft.program.engine.graphical.Transformation;
@@ -14,7 +13,6 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL30.glBindVertexArray;
 public class Renderer {
 
     private final float FOV = (float) Math.toRadians(60.0);
@@ -25,19 +23,23 @@ public class Renderer {
 
     private ShaderProgram shaderProgram;
 
+    private final Path vertexShaderPath = Path.of("src", "main", "resources", "game", "shader", "vertex.vs");
+    private final Path fragmentShaderPath = Path.of("src", "main", "resources", "game", "shader", "fragment.fs");
+
     public Renderer() {
         transformation = new Transformation();
     }
 
     public void init() throws ShaderException, IOException {
         shaderProgram = new ShaderProgram();
-        shaderProgram.createVertexShader(ResourceLoader.load(Path.of("src", "main", "resources", "game", "vertex.vs")));
-        shaderProgram.createFragmentShader(ResourceLoader.load(Path.of("src", "main", "resources", "game", "fragment.fs")));
+        shaderProgram.createVertexShader(ResourceLoader.load(vertexShaderPath));
+        shaderProgram.createFragmentShader(ResourceLoader.load(fragmentShaderPath));
         shaderProgram.link();
 
         // Create uniforms for world and projection matrices
         shaderProgram.createUniform("projectionMatrix");
         shaderProgram.createUniform("worldMatrix");
+        shaderProgram.createUniform("texture_sampler");
     }
 
     public void clear() {
@@ -52,13 +54,18 @@ public class Renderer {
         }
 
         shaderProgram.bind();
-        //System.out.println(window.getWidth() + " / " + window.getHeight() + " | " + ((float)window.getWidth() / (float)window.getHeight()));
+
         Matrix projectionMatrix = transformation.getProjectionMatrix(FOV, (float) window.getWidth() / (float) window.getHeight(), Z_NEAR, Z_FAR);
         shaderProgram.setUniform("projectionMatrix", projectionMatrix);
-        //System.out.println(projectionMatrix);
+
+        shaderProgram.setUniform("texture_sampler", 0);
 
         for (Block block : blocks) {
-            Matrix worldMatrix = transformation.getWorldMatrix(block.getPosition(), block.getRotation(), block.getScale());
+            Matrix worldMatrix = transformation.getWorldMatrix(
+                    block.getPosition(),
+                    block.getRotation(),
+                    block.getScale()
+            );
             shaderProgram.setUniform("worldMatrix", worldMatrix);
             block.getMesh().render();
         }

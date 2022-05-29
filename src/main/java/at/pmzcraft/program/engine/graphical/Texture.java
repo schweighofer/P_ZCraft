@@ -2,6 +2,7 @@ package at.pmzcraft.program.engine.graphical;
 
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
+import java.nio.file.Path;
 
 import at.pmzcraft.exception.TextureException;
 import at.pmzcraft.exception.texture.LoadTextureException;
@@ -19,8 +20,8 @@ public class Texture {
         this.ID = ID;
     }
 
-    public Texture(String path) throws TextureException {
-        this(loadTexture(path));
+    public Texture(Path path) throws TextureException {
+        this(loadTexture(path.toString()));
     }
 
     public void bind() {
@@ -50,7 +51,7 @@ public class Texture {
                 throw new LoadTextureException(stbi_failure_reason());
             }
 
-            //Get width and height of image
+            // Get width and height of image
             width = w.get();
             height = h.get();
         }
@@ -63,12 +64,18 @@ public class Texture {
         // Tell OpenGL how to unpack the RGBA bytes. Each component is 1 byte size
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
-        //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-        //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
         // Upload the texture data
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0,
-                GL_RGBA, GL_UNSIGNED_BYTE, buf);
+        glTexImage2D(
+                GL_TEXTURE_2D,
+                0,
+                GL_RGBA,
+                width,
+                height,
+                0,
+                GL_RGBA,
+                GL_UNSIGNED_BYTE,
+                buf
+        );
         // Generate Mip Map
         glGenerateMipmap(GL_TEXTURE_2D);
 

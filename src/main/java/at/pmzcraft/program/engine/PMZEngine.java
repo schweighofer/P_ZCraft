@@ -1,11 +1,12 @@
 package at.pmzcraft.program.engine;
 
 import at.pmzcraft.exception.ShaderException;
+import at.pmzcraft.exception.TextureException;
 import at.pmzcraft.exception.WindowException;
 import at.pmzcraft.program.engine.utils.ResourceLoader;
 import at.pmzcraft.program.engine.utils.Synchronizer;
 import at.pmzcraft.program.engine.utils.Timer;
-import at.pmzcraft.program.game.PMZGameHandler;
+import at.pmzcraft.program.game.PMZGame;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWImage;
 
@@ -23,7 +24,7 @@ import static org.lwjgl.system.MemoryUtil.memAllocInt;
  * Copyright: Marcus Schweighofer
 */
 
-public class PMZGameController implements Runnable {
+public class PMZEngine implements Runnable {
 
     // Window (window handle wrapper)
     private final Window window;
@@ -33,9 +34,9 @@ public class PMZGameController implements Runnable {
     private final Synchronizer synchronizer;
 
     // Concrete BL
-    private final PMZGameHandler logicImplementation;
+    private final PMZGame logicImplementation;
 
-    public PMZGameController(String title, int width, int height, boolean isVSyncEnabled, PMZGameHandler logicImplementation) {
+    public PMZEngine(String title, int width, int height, boolean isVSyncEnabled, PMZGame logicImplementation) {
         window = new Window(title, width, height, isVSyncEnabled);
         this.logicImplementation = logicImplementation;
         timer = new Timer();
@@ -50,7 +51,7 @@ public class PMZGameController implements Runnable {
         try {
             init();
             loop();
-        } catch (WindowException | ShaderException | IOException | InterruptedException e) {
+        } catch (WindowException | ShaderException | TextureException | IOException | InterruptedException e) {
             e.printStackTrace();
         } finally {
             // Cleanup the shader program
@@ -60,7 +61,7 @@ public class PMZGameController implements Runnable {
         }
     }
 
-    private void init() throws WindowException, ShaderException, IOException {
+    private void init() throws WindowException, ShaderException, TextureException, IOException {
         window.init();
         timer.init();
         logicImplementation.init();

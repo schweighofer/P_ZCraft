@@ -38,18 +38,17 @@ public class ShaderProgram {
         uniforms.put(uniformName, uniformLocation);
     }
 
-    /*public void setUniform(String uniformName, Matrix value) {
-        try (MemoryStack stack = MemoryStack.stackPush()) {
-            glUniformMatrix4fv(uniforms.get(uniformName), false, value.toFloatBuffer());
-        }
-    }*/
-
     public void setUniform(String uniformName, Matrix value) {
         // Dump the matrix into a float buffer
 
         try (MemoryStack stack = MemoryStack.stackPush()) {
             glUniformMatrix4fv(uniforms.get(uniformName), false, value.toFloatBuffer());
         }
+    }
+
+    public void setUniform(String uniformName, int value) {
+        // Set uniform to simple integer value
+        glUniform1i(uniforms.get(uniformName), value);
     }
 
     public int createShader(String code, int type) throws ShaderCreationException, ShaderCompilationException {

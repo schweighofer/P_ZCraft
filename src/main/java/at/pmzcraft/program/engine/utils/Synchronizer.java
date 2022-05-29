@@ -1,6 +1,6 @@
 package at.pmzcraft.program.engine.utils;
 
-import at.pmzcraft.program.engine.PMZGameController;
+import at.pmzcraft.program.engine.PMZEngine;
 
 public class Synchronizer {
 
@@ -8,13 +8,13 @@ public class Synchronizer {
     private final int TARGET_UPS = 30;
 
     private final Timer timer;
-    private final PMZGameController controller;
+    private final PMZEngine controller;
 
     private double elapsedTime;
     private double accumulator = 0.0d;
     private float interval = 1.0f / TARGET_UPS;
 
-    public Synchronizer(PMZGameController controller, Timer timer) {
+    public Synchronizer(PMZEngine controller, Timer timer) {
         this.controller = controller;
         this.timer = timer;
     }

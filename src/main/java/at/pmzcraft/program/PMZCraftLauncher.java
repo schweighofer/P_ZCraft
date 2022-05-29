@@ -1,7 +1,7 @@
 package at.pmzcraft.program;
 
-import at.pmzcraft.program.engine.PMZGameController;
-import at.pmzcraft.program.game.PMZGameHandler;
+import at.pmzcraft.program.engine.PMZEngine;
+import at.pmzcraft.program.game.PMZGame;
 
 import java.awt.*;
 
@@ -12,8 +12,8 @@ public class PMZCraftLauncher {
         String threadName = "main-game-" + 0;
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         boolean isVSyncEnabled = true;
-        PMZGameHandler concreteLogic = new PMZGameHandler();
-        PMZGameController controller = new PMZGameController(title, 600, 480, isVSyncEnabled, concreteLogic);
+        PMZGame concreteLogic = new PMZGame();
+        PMZEngine controller = new PMZEngine(title, 600, 480, isVSyncEnabled, concreteLogic);
         Thread mainGameThread = new Thread(controller);
         mainGameThread.setName(threadName);
         mainGameThread.start();
