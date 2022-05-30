@@ -45,6 +45,7 @@ public class Menu extends CardLayout {
                 System.out.println("play");
                 //todo: spiel verknüpfen
                 PMZCraftLauncher.startGameInstance();
+                f.dispatchEvent(new WindowEvent(f, WindowEvent.WINDOW_CLOSING));
             }
         });
         btnexit.addActionListener(new ActionListener(){
@@ -57,7 +58,7 @@ public class Menu extends CardLayout {
         btnsettings.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 btnplay.setIcon(new ImageIcon("src/main/resources/menu/L_"+selectedLanguage+"_1.png"));
-                btnsettings.removeActionListener(btnexit.getActionListeners()[0]);
+                btnplay.removeActionListener(btnplay.getActionListeners()[0]);
                 btnplay.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -106,7 +107,7 @@ public class Menu extends CardLayout {
                 btnexit.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        f.dispatchEvent(new WindowEvent(f, WindowEvent.WINDOW_CLOSING));
+                        f.dispatchEvent(new WindowEvent(f, WindowEvent.WINDOW_CLOSING));f.dispatchEvent(new WindowEvent(f, WindowEvent.WINDOW_CLOSING));
                         JFrame f = new JFrame("P*ZCraft");
                         CardLayout layout = new Menu(f,selectedLanguage, musikant);
                     }

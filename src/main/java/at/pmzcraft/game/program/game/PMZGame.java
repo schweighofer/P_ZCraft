@@ -159,12 +159,12 @@ public class PMZGame {
 
     public void input(Window window) {
         cameraPosition = keyboardInputHandler.inputMovement(window);
-        //cameraRotation = keyboardInputHandler.inputRotation(window);
+        cameraRotation = keyboardInputHandler.inputRotation(window);
     }
 
     public void update(float interval) {
         camera.movePosition(VectorUtils.mathScalarProduct(cameraPosition, CAMERA_STEP_SENSITIVITY));
-        //camera.moveRotation(VectorUtils.mathScalarProduct(cameraRotation, CAMERA_ROTATION_SENSITIVITY));
+        camera.moveRotation(VectorUtils.mathScalarProduct(cameraRotation, CAMERA_ROTATION_SENSITIVITY));
         // Other stuff mouse movement ersatz haha
     }
 
