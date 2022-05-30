@@ -54,6 +54,7 @@ public class Menu extends CardLayout {
                 System.exit(0);
             }
         });
+
         btnsettings.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 btnplay.setIcon(new ImageIcon("src/main/resources/menu/L_"+selectedLanguage+"_1.png"));
