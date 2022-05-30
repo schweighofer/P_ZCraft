@@ -7,9 +7,9 @@ import at.pmzcraft.game.exception.general.WindowException;
 import at.pmzcraft.game.program.engine.utils.Synchronizer;
 import at.pmzcraft.game.program.engine.utils.Timer;
 import at.pmzcraft.game.program.game.PMZGame;
-import at.pmzcraft.menu.Menu;
 import org.lwjgl.Version;
 
+import java.awt.*;
 import java.io.IOException;
 
 import static org.lwjgl.stb.STBImage.stbi_image_free;
@@ -54,7 +54,7 @@ public class PMZEngine implements Runnable {
             // Cleanup the window after the game is done
             window.close();
 
-            Menu.setVisibleAgain();
+            //Menu.setVisibleAgain();
 
             // TODO: return to menu?
         }

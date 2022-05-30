@@ -1,5 +1,9 @@
 package at.pmzcraft.menu;
 
+import at.pmzcraft.game.program.PMZCraftLauncher;
+import at.pmzcraft.menu.MouseMover;
+import at.pmzcraft.menu.Musician;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
@@ -8,8 +12,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
-
-import at.pmzcraft.game.program.PMZCraftLauncher;
 
 public class Menu extends CardLayout {
 
@@ -21,11 +23,8 @@ public class Menu extends CardLayout {
     public ImageIcon btn2icon;
     public ImageIcon btn3icon;
 
-    public static JFrame f;
-
 
     public Menu(JFrame f, String language, Musician musikant) {
-        this.f = f;
         countOfJFrames = countOfJFrames + 1;
         System.out.println(countOfJFrames);
 
@@ -44,7 +43,7 @@ public class Menu extends CardLayout {
         btnplay.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 System.out.println("play");
-                f.setVisible(false);
+                //todo: spiel verknüpfen
                 PMZCraftLauncher.startGameInstance();
             }
         });
@@ -141,12 +140,12 @@ public class Menu extends CardLayout {
 
 
                 //todo: settings erweitern
-                    //-> schieb bar für volume
-                    //-> namen eingabe
-                    //-> ?how many chunks
-                    //-> ?easy or impossible
-                    //-> ?farbenblindheit (wenn ja einen random filder über die textur legen)
-                    //-> ...
+                //-> schieb bar für volume
+                //-> namen eingabe
+                //-> ?how many chunks
+                //-> ?easy or impossible
+                //-> ?farbenblindheit (wenn ja einen random filder über die textur legen)
+                //-> ...
                 System.out.println("settings");
             }
         });
@@ -164,12 +163,7 @@ public class Menu extends CardLayout {
         f.add(btnexit);
         f.setLayout(null);
         f.setVisible(true);
-        f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         new Thread(new MouseMover()).start();
-    }
-
-    public static void setVisibleAgain() {
-        f.setVisible(true);
     }
 }
