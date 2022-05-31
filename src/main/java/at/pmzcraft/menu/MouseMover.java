@@ -6,7 +6,7 @@ public class MouseMover implements Runnable {
     @Override
     public void run() {
         try {
-            iLikeToMoveItMoveIt();
+            updateButtons();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (AWTException e) {
@@ -14,14 +14,8 @@ public class MouseMover implements Runnable {
         }
     }
 
-    private void iLikeToMoveItMoveIt() throws InterruptedException, AWTException {
-        if (Menu.isHovered) { //am anfang längeres sleep weil dort manches noch nicht geladen sein kann
-            Thread.sleep(37);
-        } else {
-            Thread.sleep(200);
-            Menu.isHovered = Boolean.TRUE;
-        }
-
+    private void updateButtons() throws InterruptedException, AWTException {
+        Thread.sleep(35);
         PointerInfo a = MouseInfo.getPointerInfo();
         Point b = a.getLocation();
 

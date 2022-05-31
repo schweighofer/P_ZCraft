@@ -7,7 +7,7 @@ import java.net.URL;
 
 public class Musician {
     private Clip clip = null;
-    FloatControl gainControl;
+    private FloatControl gainControl;
     public Musician() throws LineUnavailableException, UnsupportedAudioFileException, IOException {
         URL url = null;
         url = new File("src/main/resources/menu/SoundHelix-Song-1.wav").toURI().toURL();
@@ -24,6 +24,9 @@ public class Musician {
 
     public void changeVolume(float volume){
         gainControl.setValue(volume);
+    }
+    public void aufhoeren(){
+        clip.stop();
     }
 
 }

@@ -20,6 +20,6 @@ public class Master {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        CardLayout layout = new Menu(f,"EN", musikant);
+        new Menu(f,"EN", musikant);
     }
 }

@@ -1,8 +1,6 @@
 package at.pmzcraft.menu;
 
 import at.pmzcraft.game.program.PMZCraftLauncher;
-import at.pmzcraft.menu.MouseMover;
-import at.pmzcraft.menu.Musician;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -13,7 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 
-public class Menu extends CardLayout {
+public class Menu{
 
     private static int countOfJFrames = 0;
     public String selectedLanguage;
@@ -27,6 +25,7 @@ public class Menu extends CardLayout {
     public Menu(JFrame f, String language, Musician musikant) {
         countOfJFrames = countOfJFrames + 1;
         System.out.println(countOfJFrames);
+
 
         selectedLanguage = language;
         btn1icon = new ImageIcon("src/main/resources/menu/play_"+selectedLanguage+".png");
@@ -43,7 +42,6 @@ public class Menu extends CardLayout {
         btnplay.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 System.out.println("play");
-                //todo: spiel verknüpfen
                 PMZCraftLauncher.startGameInstance();
                 f.dispatchEvent(new WindowEvent(f, WindowEvent.WINDOW_CLOSING));
             }
@@ -77,7 +75,7 @@ public class Menu extends CardLayout {
 
                         f.dispatchEvent(new WindowEvent(f, WindowEvent.WINDOW_CLOSING));
                         JFrame f = new JFrame("P*ZCraft");
-                        CardLayout layout = new Menu(f,selectedLanguage, musikant);
+                        new Menu(f,selectedLanguage, musikant);
                     }
                 });
                 btnsettings.setIcon(new ImageIcon("src/main/resources/menu/L_"+selectedLanguage+"_2.png"));
@@ -99,7 +97,7 @@ public class Menu extends CardLayout {
                         }
                         f.dispatchEvent(new WindowEvent(f, WindowEvent.WINDOW_CLOSING));
                         JFrame f = new JFrame("P*ZCraft");
-                        CardLayout layout = new Menu(f,selectedLanguage, musikant);
+                        new Menu(f,selectedLanguage, musikant);
                     }
                 });
                 btnexit.setIcon(new ImageIcon("src/main/resources/menu/zruck_"+selectedLanguage+".png"));
@@ -107,11 +105,16 @@ public class Menu extends CardLayout {
                 btnexit.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        f.dispatchEvent(new WindowEvent(f, WindowEvent.WINDOW_CLOSING));f.dispatchEvent(new WindowEvent(f, WindowEvent.WINDOW_CLOSING));
+                        f.dispatchEvent(new WindowEvent(f, WindowEvent.WINDOW_CLOSING));
                         JFrame f = new JFrame("P*ZCraft");
-                        CardLayout layout = new Menu(f,selectedLanguage, musikant);
+                        new Menu(f,selectedLanguage, musikant);
                     }
                 });
+
+                JLabel volumeLabel = new JLabel();
+                volumeLabel.setBounds(40,250,40,20);
+                f.add(volumeLabel);
+                volumeLabel.setVisible(true);
 
                 JSlider volumeSlider = new JSlider(0, 100, 50);
                 volumeSlider.setMaximum(6);
@@ -126,18 +129,27 @@ public class Menu extends CardLayout {
                     }
                 });
 
-                //todo: die nächsten 2 wichser erscheinen einfach nicht
-                JLabel nameLabel = new JLabel();
-                nameLabel.setText("your name: ");//todo: csv datei oder so um settings zu speichern und csv datei um text zu jeweiliger Sprache zu speichern
-                nameLabel.setBounds(1200,285,100,120);
+                //todo: Eingaben fixen. zbs. die nächsten 2 Componente
+
+                JPanel panel = new JPanel();
+                panel.setLayout(new BorderLayout());
+
+                JLabel nameLabel = new JLabel("your name: ");
+                //nameLabel.setBounds(1200,285,100,120);
+                panel.add(nameLabel);
+                //todo: xml datei to save settings
                 nameLabel.setBackground(Color.lightGray);
-                f.add(nameLabel);
 
-                JEditorPane nameInput = new JEditorPane();
-                nameInput.setBounds(1320,285,300,120);
+                JTextField nameInput = new JTextField();
+                //nameInput.setBounds(1320,285,300,120);
                 nameInput.setBackground(Color.lightGray);
-                f.add(nameInput);
+                panel.add(nameInput);
 
+                panel.revalidate();
+                panel.repaint();
+                panel.setVisible(true);
+                f.add(panel);
+                
 
 
                 //todo: settings erweitern
