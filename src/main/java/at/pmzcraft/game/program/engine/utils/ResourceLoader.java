@@ -8,13 +8,18 @@ import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.SeekableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 import static org.lwjgl.BufferUtils.createByteBuffer;
 
 public class ResourceLoader {
 
-    public static String load(Path path) throws IOException {
+    public static String loadResource(Path path) throws IOException {
         return Files.readString(path);
+    }
+
+    public static List<String> readAllLines(Path fileName) throws IOException {
+        return Files.readAllLines(fileName);
     }
 
     private static ByteBuffer resizeBuffer(ByteBuffer buffer, int newCapacity) {
@@ -52,4 +57,6 @@ public class ResourceLoader {
         buffer.flip();
         return buffer;
     }
+
+
 }

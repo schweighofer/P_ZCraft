@@ -13,7 +13,7 @@
         <maven.compiler.target>17</maven.compiler.target>
 
         <lwjgl.version>3.3.1</lwjgl.version>
-        <pngdecoder.version>1.0</pngdecoder.version>
+        <!-- <pngdecoder.version>1.0</pngdecoder.version> -->
     </properties>
 
     <profiles>
@@ -155,11 +155,14 @@
 
     <dependencies>
         <!-- test this dependencies usefulness!!! -->
+        <!-- not useful I think -->
+        <!--
         <dependency>
             <groupId>org.l33tlabs.twl</groupId>
             <artifactId>pngdecoder</artifactId>
             <version>${pngdecoder.version}</version>
         </dependency>
+        -->
 
         <dependency>
             <groupId>org.lwjgl</groupId>

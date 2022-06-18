@@ -16,7 +16,7 @@ public class AngleUtils {
     }
 
     public static float sin(float value) {
-        return (float) StrictMath.sin (value);
+        return (float) StrictMath.sin(value);
     }
 
     public static float cos(float value) {

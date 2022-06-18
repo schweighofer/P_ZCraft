@@ -53,4 +53,8 @@ public class Camera {
     public void moveRotation(Vector offset) {
         rotation = add(rotation, offset);
     }
+
+    public String toString() {
+        return "Camera Position: " + getPosition();
+    }
 }

@@ -3,6 +3,7 @@ package at.pmzcraft.game.program.engine.graphical;
 
 import at.pmzcraft.game.program.engine.Camera;
 import at.pmzcraft.game.program.engine.render.mathematical.matrix.Matrix;
+import at.pmzcraft.game.program.engine.render.mathematical.matrix.MatrixUtils;
 import at.pmzcraft.game.program.engine.render.mathematical.vector.Vector;
 import at.pmzcraft.game.program.game.world.gameitem.blocks.Block;
 
@@ -12,8 +13,6 @@ import static at.pmzcraft.game.program.engine.render.mathematical.vector.Vector.
 import static at.pmzcraft.game.program.engine.render.mathematical.vector.VectorUtils.*;
 
 public class Transformation {
-
-    private Matrix worldMatrix;
 
     private Matrix projectionMatrix;
     private Matrix modelViewMatrix;
@@ -31,46 +30,42 @@ public class Transformation {
         Vector cameraPosition = camera.getPosition();
         Vector cameraRotation = camera.getRotation();
 
-        viewMatrix = createIdentityMatrix();
-        viewMatrix = multiply(viewMatrix, createRotationMatrixX(toRadians(cameraRotation.get(X))));
-        viewMatrix = multiply(viewMatrix, createRotationMatrixY(toRadians(cameraRotation.get(Y))));
-
-        viewMatrix = multiply(viewMatrix, createTranslationMatrix(cameraPosition));
+        viewMatrix = multiply(
+                  multiply(
+                    createIdentityMatrix(),
+                    // Rotation (here is problem)
+                    createRotationMatrixX(toRadians(cameraRotation.get(X)))
+                  ), createRotationMatrixY(toRadians(cameraRotation.get(Y)))
+                 );
+         viewMatrix = multiply(viewMatrix,createTranslationMatrix(cameraPosition));
 
         return viewMatrix;
     }
 
-    public Matrix getModelViewMatrix(Block block, Matrix viewMatrix) {
+    public Matrix getModelViewMatrix(Block block, Matrix viewMatrix, Camera camera) {
         Vector position = block.getPosition();
         Vector rotation = mathScalarProduct(block.getRotation(), -1);
-        modelViewMatrix = createIdentityMatrix();
-        modelViewMatrix = multiply(modelViewMatrix, createTranslationMatrix(position));
 
-        Matrix rotationMatrix = createRotationMatrixX(toRadians(rotation.get(X)));
-        rotationMatrix = multiply(rotationMatrix, createRotationMatrixY(toRadians(rotation.get(Y))));
-        rotationMatrix = multiply(rotationMatrix, createRotationMatrixZ(toRadians(rotation.get(Z))));
-
-        modelViewMatrix = multiply(modelViewMatrix, rotationMatrix);
-
-        modelViewMatrix = multiply(modelViewMatrix, createScalationMatrix(block.getScale()));
+        modelViewMatrix = multiply(
+                // Translation
+                createTranslationMatrix(position),
+                // Rotation
+                createRotationMatrixX(toRadians(-rotation.get(X))),
+                createRotationMatrixY(toRadians(-rotation.get(Y))),
+                createRotationMatrixZ(toRadians(-rotation.get(Z))),
+                // "Scalation" Scaling
+                createScalationMatrix(block.getScale())
+        );
 
         Matrix viewCurrent = (Matrix) viewMatrix.clone();
 
-        return multiply(modelViewMatrix, viewCurrent);
+        return MatrixUtils.mulAffine(viewCurrent, modelViewMatrix);
+
+    //     return multiply(modelViewMatrix, viewCurrent);
     }
 
-    public Matrix getWorldMatrix(Vector offset, Vector rotation, float scale) {
-        Matrix translationMatrix = createTranslationMatrix(offset);
 
-        Matrix rotationMatrix = createRotationMatrixX(rotation.get(X) * PI / 180);
-        rotationMatrix = multiply(rotationMatrix, createRotationMatrixY(rotation.get(Y) * PI / 180));
-        rotationMatrix = multiply(rotationMatrix, createRotationMatrixZ(rotation.get(Z) * PI / 180));
 
-        Matrix scalationMatrix = createScalationMatrix(scale);
 
-        worldMatrix = multiply(translationMatrix, rotationMatrix);
-        worldMatrix = multiply(worldMatrix, scalationMatrix);
 
-        return worldMatrix;
-    }
 }

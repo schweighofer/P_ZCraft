@@ -1,12 +1,16 @@
 package at.pmzcraft.game.program.engine.graphical;
 
 import at.pmzcraft.game.exception.shader.*;
+import at.pmzcraft.game.program.engine.render.Material;
+import at.pmzcraft.game.program.engine.render.PointLight;
 import at.pmzcraft.game.program.engine.render.mathematical.matrix.Matrix;
+import at.pmzcraft.game.program.engine.render.mathematical.vector.Vector;
 import org.lwjgl.system.MemoryStack;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import static at.pmzcraft.game.program.engine.render.mathematical.vector.Vector.*;
 import static org.lwjgl.opengl.GL20.*;
 
 // Shader handling for rendering
@@ -51,6 +55,33 @@ public class ShaderProgram {
         glUniform1i(uniforms.get(uniformName), value);
     }
 
+    public void setUniform(String uniformName, float value) {
+        // Set uniform to simple float value
+        glUniform1f(uniforms.get(uniformName), value);
+    }
+
+    public void setUniform(String uniformName, Vector value) {
+        glUniform3f(uniforms.get(uniformName), value.get(X), value.get(Y), value.get(Z));
+    }
+
+    public void setUniform(String uniformName, PointLight pointLight) {
+        setUniform(uniformName + ".colour", pointLight.getColor() );
+        setUniform(uniformName + ".position", pointLight.getPosition());
+        setUniform(uniformName + ".intensity", pointLight.getIntensity());
+        PointLight.Attenuation att = pointLight.getAttenuation();
+        setUniform(uniformName + ".att.constant", att.getConstant());
+        setUniform(uniformName + ".att.linear", att.getLinear());
+        setUniform(uniformName + ".att.exponent", att.getExponent());
+    }
+
+    public void setUniform(String uniformName, Material material) {
+        setUniform(uniformName + ".ambient", material.getAmbientColour());
+        setUniform(uniformName + ".diffuse", material.getDiffuseColour());
+        setUniform(uniformName + ".specular", material.getSpecularColour());
+        setUniform(uniformName + ".hasTexture", material.isTextured() ? 1 : 0);
+        setUniform(uniformName + ".reflectance", material.getReflectance());
+    }
+
     public int createShader(String code, int type) throws ShaderCreationException, ShaderCompilationException {
         // Create shader
         int shaderID = glCreateShader(type);
@@ -83,6 +114,23 @@ public class ShaderProgram {
     // Create a Fragment shader
     public void createFragmentShader(String code) throws ShaderCreationException, ShaderCompilationException {
         fragmentShaderID = createShader(code, GL_FRAGMENT_SHADER);
+    }
+
+    public void createPointLightUniform(String uniformName) throws UniformNotFoundException {
+        createUniform(uniformName + ".colour");
+        createUniform(uniformName + ".position");
+        createUniform(uniformName + ".intensity");
+        createUniform(uniformName + ".att.constant");
+        createUniform(uniformName + ".att.linear");
+        createUniform(uniformName + ".att.exponent");
+    }
+
+    public void createMaterialUniform(String uniformName) throws UniformNotFoundException {
+        createUniform(uniformName + ".ambient");
+        createUniform(uniformName + ".diffuse");
+        createUniform(uniformName + ".specular");
+        createUniform(uniformName + ".hasTexture");
+        createUniform(uniformName + ".reflectance");
     }
 
     public void link() throws ShaderLinkingException, ShaderCodeValidationException {

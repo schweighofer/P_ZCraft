@@ -56,18 +56,18 @@ public class KeyboardInputHandler {
         if (window.isKeyPressed(GLFW_KEY_UP) && window.isKeyPressed(GLFW_KEY_DOWN)) {
 
         } else if (window.isKeyPressed(GLFW_KEY_UP)) {
-            v.set(Y, 10);
+            v.set(X, 10);
         } else if (window.isKeyPressed(GLFW_KEY_DOWN)) {
-            v.set(Y, -10);
+            v.set(X, -10);
         }
 
         // left - right
         if (window.isKeyPressed(GLFW_KEY_LEFT) && window.isKeyPressed(GLFW_KEY_RIGHT)) {
 
         } else if (window.isKeyPressed(GLFW_KEY_LEFT)) {
-            v.set(X, 10);
+            v.set(Y, 10);
         } else if (window.isKeyPressed(GLFW_KEY_RIGHT)) {
-            v.set(X, -10);
+            v.set(Y, -10);
         }
 
         return v;
