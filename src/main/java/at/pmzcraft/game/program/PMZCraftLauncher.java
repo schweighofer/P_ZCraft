@@ -1,8 +1,6 @@
 package at.pmzcraft.game.program;
 
 import at.pmzcraft.game.program.engine.PMZEngine;
-import at.pmzcraft.game.program.engine.render.mathematical.matrix.Matrix;
-import at.pmzcraft.game.program.engine.render.mathematical.matrix.MatrixUtils;
 import at.pmzcraft.game.program.game.PMZGame;
 
 import java.awt.*;

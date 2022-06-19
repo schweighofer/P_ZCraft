@@ -1,12 +1,12 @@
 package at.pmzcraft.game.program.engine.render;
 
-import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
-import java.nio.file.Path;
-
 import at.pmzcraft.game.exception.general.TextureException;
 import at.pmzcraft.game.exception.texture.LoadTextureException;
 import org.lwjgl.system.MemoryStack;
+
+import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
+import java.nio.file.Path;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL30.glGenerateMipmap;
@@ -60,11 +60,7 @@ public class Texture {
         int textureId = glGenTextures();
         // Bind the texture
         glBindTexture(GL_TEXTURE_2D, textureId);
-
-        // Tell OpenGL how to unpack the RGBA bytes. Each component is 1 byte size
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-
-        // Upload the texture data
         glTexImage2D(
                 GL_TEXTURE_2D,
                 0,
@@ -76,6 +72,7 @@ public class Texture {
                 GL_UNSIGNED_BYTE,
                 buf
         );
+
         // Generate Mip Map
         glGenerateMipmap(GL_TEXTURE_2D);
 

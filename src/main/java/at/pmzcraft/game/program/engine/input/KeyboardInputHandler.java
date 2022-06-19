@@ -1,7 +1,7 @@
 package at.pmzcraft.game.program.engine.input;
 
 import at.pmzcraft.game.program.engine.Window;
-import at.pmzcraft.game.program.engine.render.mathematical.vector.vector.Vector4;
+import at.pmzcraft.game.program.engine.render.mathematical.vector.vector.Vector3;
 import at.pmzcraft.game.program.game.PMZGame;
 
 import static at.pmzcraft.game.program.engine.render.mathematical.vector.vector.Vector4.*;
@@ -16,8 +16,8 @@ public class KeyboardInputHandler {
     }
 
     // TODO: Locales and Keyboards
-    public Vector4 inputMovement(Window window) {
-        Vector4 v = new Vector4();
+    public Vector3 inputMovement(Window window) {
+        Vector3 v = new Vector3();
 
         // forward - backward
         if (window.isKeyPressed(GLFW_KEY_W) && window.isKeyPressed(GLFW_KEY_S)) {
@@ -49,8 +49,8 @@ public class KeyboardInputHandler {
         return v;
     }
 
-    public Vector4 inputRotation(Window window) {
-        Vector4 v = new Vector4();
+    public Vector3 inputRotation(Window window) {
+        Vector3 v = new Vector3();
 
         // up - down
         if (window.isKeyPressed(GLFW_KEY_UP) && window.isKeyPressed(GLFW_KEY_DOWN)) {

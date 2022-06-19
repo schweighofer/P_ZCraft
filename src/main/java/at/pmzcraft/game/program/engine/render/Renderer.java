@@ -8,15 +8,16 @@ import at.pmzcraft.game.program.engine.graphical.ShaderProgram;
 import at.pmzcraft.game.program.engine.graphical.Transformation;
 import at.pmzcraft.game.program.engine.render.mathematical.matrix.Matrix;
 import at.pmzcraft.game.program.engine.render.mathematical.matrix.MatrixUtils;
+import at.pmzcraft.game.program.engine.render.mathematical.vector.vector.Vector3;
 import at.pmzcraft.game.program.engine.render.mathematical.vector.vector.Vector4;
+import at.pmzcraft.game.program.engine.utils.PropertyLoader;
 import at.pmzcraft.game.program.engine.utils.ResourceLoader;
 import at.pmzcraft.game.program.game.world.gameitem.blocks.Block;
-
-import static at.pmzcraft.game.program.engine.render.mathematical.utils.AngleUtils.toRadians;
 
 import java.io.IOException;
 import java.nio.file.Path;
 
+import static at.pmzcraft.game.program.engine.render.mathematical.utils.AngleUtils.toRadians;
 import static at.pmzcraft.game.program.engine.render.mathematical.vector.vector.Vector4.*;
 import static org.lwjgl.opengl.GL11.*;
 public class Renderer {
@@ -25,20 +26,23 @@ public class Renderer {
     private static final float Z_NEAR = 0.01f;
     private static final float Z_FAR = 1000f;
 
-    private Transformation transformation;
+    private final Transformation transformation;
 
     private ShaderProgram shaderProgram;
 
-    private float specularPower;
+    private final float specularPower;
 
-    private static final Path vertexShaderPath = Path.of("src", "main", "resources", "game", "shader", "vertex.vs");
-    private static final Path fragmentShaderPath = Path.of("src", "main", "resources", "game", "shader", "fragment.fs");
+    private static final Path vertexShaderPath = PropertyLoader.getPath("vertex_shader_path");
+    private static final Path fragmentShaderPath = PropertyLoader.getPath("fragment_shader_path");
 
     public Renderer() {
         transformation = new Transformation();
         specularPower = 10;
     }
 
+    /**
+     * Init the Renderer
+     * */
     public void init() throws ShaderException, IOException {
         shaderProgram = new ShaderProgram();
         shaderProgram.createVertexShader(ResourceLoader.loadResource(vertexShaderPath));
@@ -62,7 +66,10 @@ public class Renderer {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
-    public void render(Window window, Camera camera, Block[] blocks, Vector4 ambientLight, PointLight pointLight) {
+    /**
+     * Main Render Method (the magic happens here)
+     * */
+    public void render(Window window, Camera camera, Block[] blocks, Vector3 ambientLight, PointLight pointLight) {
         clear();
 
         if (window.wasResized()) {
@@ -81,12 +88,11 @@ public class Renderer {
         // Update Light Uniforms
         shaderProgram.setUniform("l_ambientLight", ambientLight);
         shaderProgram.setUniform("l_specularPower", specularPower);
-        // Get a copy of the light object and transform its position to view coordinates
+
+        // Transform light object
         PointLight currPointLight = new PointLight(pointLight);
-        Vector4 lightPos = currPointLight.getPosition();
-        Vector4 aux = (Vector4) lightPos.clone();
-        aux.set(W, 1);
-        // TODO mul nachmachen
+        Vector3 lightPos = currPointLight.getPosition();
+        Vector4 aux = new Vector4(lightPos.get(X), lightPos.get(Y), lightPos.get(Z), 1);
         aux = MatrixUtils.multiplyMatrixVector(viewMatrix, aux);
         lightPos.set(X, aux.get(X));
         lightPos.set(Y, aux.get(Y));
@@ -108,7 +114,9 @@ public class Renderer {
         shaderProgram.unbind();
     }
 
-
+    /**
+     * Cleanup the Shader Program
+    * */
     public void cleanup() {
         if (shaderProgram != null) {
             shaderProgram.cleanup();

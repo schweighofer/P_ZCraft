@@ -16,7 +16,7 @@ import static org.lwjgl.opengl.GL30.*;
 
 public class Mesh {
 
-    private final int vaoId;
+    private final int vaoID;
 
     private final List<Integer> vboIdList;
 
@@ -33,8 +33,8 @@ public class Mesh {
             vertexCount = indices.length;
             vboIdList = new ArrayList<>();
 
-            vaoId = glGenVertexArrays();
-            glBindVertexArray(vaoId);
+            vaoID = glGenVertexArrays();
+            glBindVertexArray(vaoID);
 
             // Position VBO
             int vboId = glGenBuffers();
@@ -100,8 +100,8 @@ public class Mesh {
         this.material = material;
     }
 
-    public int getVaoId() {
-        return vaoId;
+    public int getVaoID() {
+        return vaoID;
     }
 
     public int getVertexCount() {
@@ -118,9 +118,9 @@ public class Mesh {
         }
 
         // Draw the mesh
-        glBindVertexArray(getVaoId());
+        glBindVertexArray(vaoID);
 
-        glDrawElements(GL_TRIANGLES, getVertexCount(), GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, vertexCount, GL_UNSIGNED_INT, 0);
 
         // Restore state
         glBindVertexArray(0);
@@ -144,6 +144,6 @@ public class Mesh {
 
         // Delete the VAO
         glBindVertexArray(0);
-        glDeleteVertexArrays(vaoId);
+        glDeleteVertexArrays(vaoID);
     }
 }

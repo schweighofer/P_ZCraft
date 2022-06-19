@@ -14,7 +14,6 @@ import java.nio.file.Path;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.glfw.GLFW.glfwShowWindow;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.stb.STBImage.stbi_image_free;
 import static org.lwjgl.stb.STBImage.stbi_load_from_memory;

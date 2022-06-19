@@ -3,7 +3,6 @@ package at.pmzcraft.menu;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
-import java.awt.*;
 import java.io.IOException;
 
 

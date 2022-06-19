@@ -4,6 +4,7 @@ import at.pmzcraft.game.exception.shader.*;
 import at.pmzcraft.game.program.engine.render.Material;
 import at.pmzcraft.game.program.engine.render.PointLight;
 import at.pmzcraft.game.program.engine.render.mathematical.matrix.Matrix;
+import at.pmzcraft.game.program.engine.render.mathematical.vector.vector.Vector3;
 import at.pmzcraft.game.program.engine.render.mathematical.vector.vector.Vector4;
 import org.lwjgl.system.MemoryStack;
 
@@ -58,6 +59,10 @@ public class ShaderProgram {
     public void setUniform(String uniformName, float value) {
         // Set uniform to simple float value
         glUniform1f(uniforms.get(uniformName), value);
+    }
+
+    public void setUniform(String uniformName, Vector3 value) {
+        glUniform3f(uniforms.get(uniformName), value.get(X), value.get(Y), value.get(Z));
     }
 
     public void setUniform(String uniformName, Vector4 value) {

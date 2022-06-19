@@ -8,14 +8,9 @@ import at.pmzcraft.game.program.engine.utils.Synchronizer;
 import at.pmzcraft.game.program.engine.utils.Timer;
 import at.pmzcraft.game.program.game.PMZGame;
 import at.pmzcraft.menu.Master;
-import at.pmzcraft.menu.Musician;
 import org.lwjgl.Version;
 
-import java.awt.*;
 import java.io.IOException;
-
-import static org.lwjgl.stb.STBImage.stbi_image_free;
-import static org.lwjgl.stb.STBImage.stbi_load_from_memory;
 
 /**
  * Copyright: Marcus Schweighofer
@@ -61,7 +56,7 @@ public class PMZEngine implements Runnable {
             System.out.println(thisThread.getName() + " goes bye-bye now");
             thisThread.interrupt();
             // Program goes bye-bye >:)
-            Master.stopProgram();
+             Master.stopProgram();
         }
     }
 

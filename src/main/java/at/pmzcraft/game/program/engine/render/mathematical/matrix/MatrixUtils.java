@@ -1,11 +1,12 @@
 package at.pmzcraft.game.program.engine.render.mathematical.matrix;
 
+import at.pmzcraft.game.program.engine.render.mathematical.vector.vector.Vector3;
 import at.pmzcraft.game.program.engine.render.mathematical.vector.vector.Vector4;
 
 import static at.pmzcraft.game.program.engine.render.mathematical.matrix.Matrix.SIZE;
+import static at.pmzcraft.game.program.engine.render.mathematical.utils.AlgebraUtils.fma;
 import static at.pmzcraft.game.program.engine.render.mathematical.utils.AngleUtils.*;
 import static at.pmzcraft.game.program.engine.render.mathematical.vector.vector.Vector4.*;
-import static at.pmzcraft.game.program.engine.render.mathematical.utils.AlgebraUtils.*;
 
 public class MatrixUtils {
 
@@ -43,7 +44,7 @@ public class MatrixUtils {
         return m;
     }
 
-    public static Matrix createTranslationMatrix(Vector4 offset) {
+    public static Matrix createTranslationMatrix(Vector3 offset) {
         Matrix m = createIdentityMatrix();
         m.set(0, 3, offset.get(X));
         m.set(1, 3, offset.get(Y));

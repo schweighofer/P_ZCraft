@@ -6,18 +6,23 @@ import at.pmzcraft.game.program.engine.Camera;
 import at.pmzcraft.game.program.engine.Window;
 import at.pmzcraft.game.program.engine.input.KeyboardInputHandler;
 import at.pmzcraft.game.program.engine.render.*;
-import at.pmzcraft.game.program.engine.render.mathematical.vector.vector.Vector4;
-import at.pmzcraft.game.program.engine.utils.OBJLoader;
+import at.pmzcraft.game.program.engine.render.mathematical.vector.vector.Vector3;
+import at.pmzcraft.game.program.engine.utils.PropertyLoader;
+import at.pmzcraft.game.program.game.world.gameitem.CachedMaterial;
+import at.pmzcraft.game.program.game.world.gameitem.CachedTextureMap;
 import at.pmzcraft.game.program.game.world.gameitem.blocks.Block;
-import at.pmzcraft.game.program.game.world.gameitem.blocks.blocktypes.*;
+import at.pmzcraft.game.program.game.world.gameitem.CachedMesh;
+import at.pmzcraft.game.program.game.world.gameitem.blocks.blocktypes.GrassBlock;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PMZGame {
 
-    private Vector4 cameraPosition;
-    private Vector4 cameraRotation;
+    private Vector3 cameraPosition;
+    private Vector3 cameraRotation;
     private final Camera camera;
 
     private static final float CAMERA_STEP_SENSITIVITY = 0.05f;
@@ -26,49 +31,52 @@ public class PMZGame {
     private final KeyboardInputHandler keyboardInputHandler;
 
     private final Renderer renderer;
-    private Block[] blocks;
+    private List<Block> blocks;
 
-    private Vector4 ambientLight;
+    private Vector3 ambientLight;
     private PointLight pointLight;
 
     public PMZGame() {
         renderer = new Renderer();
         camera = new Camera();
-        cameraPosition = new Vector4();
-        cameraRotation = new Vector4();
+        cameraPosition = new Vector3();
+        cameraRotation = new Vector3();
         keyboardInputHandler = new KeyboardInputHandler(this);
     }
 
     public void init() throws ShaderException, TextureException, IOException {
         renderer.init();
-        float reflectance = 1;
-        Texture texture = new Texture(Path.of("src", "main", "resources", "game", "texture", "texture_map.png"));
-        Mesh mesh = OBJLoader.loadMesh(Path.of("src", "main", "resources", "game", "model", "cube.obj"));
-        Material material = new Material(texture, reflectance);
-        mesh.setMaterial(material);
 
-        Block b1 = new GrassBlock(mesh);
-        b1.setScale(0.5f);
+        CachedTextureMap.init(PropertyLoader.getPath("texture_map_path"));
+        CachedMaterial.init();
+        CachedMesh.init(PropertyLoader.getPath("mesh_path"));
+
+        Block b1 = new GrassBlock();
+        b1.setScale(0.25f);
         b1.setPosition(0, -0.5f, -2.5f);
 
-        Block b2 = new GrassBlock(mesh);
-        b2.setScale(0.5f);
+        Block b2 = new GrassBlock();
+        b2.setScale(0.25f);
         b2.setPosition(0.5f, 0, -2);
 
-        Block b3 = new GrassBlock(mesh);
-        b3.setScale(0.5f);
+        Block b3 = new GrassBlock();
+        b3.setScale(0.25f);
         b3.setPosition(0, 0.5f, -2.5f);
 
-        Block b4 = new GrassBlock(mesh);
-        b4.setScale(0.5f);
+        Block b4 = new GrassBlock();
+        b4.setScale(0.25f);
         b4.setPosition(0.5f, 0.5f, -2.5f);
 
-        //blocks = new Block[] {b1, b2, b3, b4};
-        blocks = new Block[] {b1};
+        blocks = new ArrayList<>();
 
-        ambientLight = new Vector4(0.3f, 0.3f, 0.3f, 0);
-        Vector4 lightColour = new Vector4(1, 1, 1, 0);
-        Vector4 lightPosition = new Vector4(0, 0, 1, 0);
+        blocks.add(b1);
+        blocks.add(b2);
+        blocks.add(b3);
+        blocks.add(b4);
+
+        ambientLight = new Vector3(0.3f, 0.3f, 0.3f);
+        Vector3 lightColour = new Vector3(1, 1, 1);
+        Vector3 lightPosition = new Vector3(0, 0, 1);
         float lightIntensity = 1.0f;
         pointLight = new PointLight(lightColour, lightPosition, lightIntensity);
         PointLight.Attenuation att = new PointLight.Attenuation(0.0f, 0.0f, 1.0f);
@@ -81,12 +89,12 @@ public class PMZGame {
     }
 
     public void update(float interval) {
-        camera.movePosition((Vector4) cameraPosition.mathScalarProduct(CAMERA_STEP_SENSITIVITY));
-        camera.moveRotation((Vector4) cameraRotation.mathScalarProduct(CAMERA_ROTATION_SENSITIVITY));
+        camera.movePosition((Vector3) cameraPosition.mathScalarProduct(CAMERA_STEP_SENSITIVITY));
+        //camera.moveRotation((Vector3) cameraRotation.mathScalarProduct(CAMERA_ROTATION_SENSITIVITY));
     }
 
     public void render(Window window) {
-        renderer.render(window, camera, blocks, ambientLight, pointLight);
+        renderer.render(window, camera, blocks.toArray(Block[]::new), ambientLight, pointLight);
     }
 
     public void cleanup() {
@@ -96,7 +104,7 @@ public class PMZGame {
         }
     }
 
-    public Vector4 getCameraPosition() {
+    public Vector3 getCameraPosition() {
         return cameraPosition;
     }
 

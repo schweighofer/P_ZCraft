@@ -8,11 +8,8 @@ public class Material {
     private static final Vector4 DEFAULT_COLOUR = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 
     private Vector4 ambientColour;
-
     private Vector4 diffuseColour;
-
     private Vector4 specularColour;
-
     private float reflectance;
 
     private Texture texture;
