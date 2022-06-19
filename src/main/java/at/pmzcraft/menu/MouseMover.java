@@ -29,6 +29,12 @@ public class MouseMover implements Runnable {
         Thread.sleep(10);
         r.mouseMove(500 + 10, 650 + 10);//für exit
         Thread.sleep(10 + 5);
+
+        r.mouseMove(505, 850); // speichern
+        Thread.sleep(60);
+        r.mouseMove(485 + 520 / 2 + 20, 850); // laden
+        Thread.sleep(60);
+
         r.mouseMove(x, y); //auf ursprung zurück
     }
 }

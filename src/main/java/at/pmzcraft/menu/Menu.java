@@ -6,6 +6,10 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class Menu{
 
@@ -111,6 +115,72 @@ public class Menu{
                 volumeSlider.addChangeListener(ce -> {
                         musikant.changeVolume(volumeSlider.getValue());
                 });
+
+                String buttonTxt = switch (selectedLanguage) {
+                    case "EN" -> "S A V E";
+                    case "GR" -> "SICHERUNG";
+                    case "SR" -> "SKLADISTE";
+                    default -> "S A V E";
+                };
+                JButton saveButton = new JButton(buttonTxt);
+                saveButton.setFont(new Font("Arial", Font.PLAIN, 36));
+                saveButton.setBounds(485,830,520 / 2,96);
+
+                saveButton.addActionListener(be -> {
+                    JFileChooser fileChooser = new JFileChooser();
+                    fileChooser.setDialogTitle("Specify a file to save");
+
+                    int userSelection = fileChooser.showSaveDialog(f);
+
+                    if (userSelection == JFileChooser.APPROVE_OPTION) {
+                        File fileToSave = fileChooser.getSelectedFile();
+                        String filePath = fileToSave.getAbsolutePath();
+                        if (!filePath.contains(".pmzmenuconfig")) {
+                            filePath += ".pmzmenuconfig";
+                        }
+                        try {
+                            Files.writeString(Path.of(filePath), selectedLanguage);
+                        } catch (IOException e) {
+                            System.out.println("Couldn't save config!!!");
+                        }
+                    }
+                });
+
+                f.add(saveButton);
+
+            buttonTxt = switch (selectedLanguage) {
+                case "EN" -> "L O A D";
+                case "GR" -> "LADEN";
+                case "SR" -> "OPTERECENJE";
+                default -> "S A V E";
+            };
+
+            JButton loadButton = new JButton(buttonTxt);
+
+            loadButton.setBounds(485 + 520 / 2,830,520 / 2,96);
+            loadButton.setFont(new Font("Arial", Font.PLAIN, 36));
+
+            loadButton.addActionListener(be -> {
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+                int result = fileChooser.showOpenDialog(null);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = fileChooser.getSelectedFile();
+                    String filePath =  selectedFile.getAbsolutePath();
+
+                    try {
+                        selectedLanguage = Files.readAllLines(Path.of(filePath)).get(0);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    f.dispatchEvent(new WindowEvent(f, WindowEvent.WINDOW_CLOSING));
+                    JFrame frame = new JFrame("P*ZCraft");
+                    new Menu(frame,selectedLanguage, musikant);
+                }
+            });
+
+            f.add(loadButton);
 
                 //todo: Eingaben fixen. zbs. die nächsten 2 Componente
 
