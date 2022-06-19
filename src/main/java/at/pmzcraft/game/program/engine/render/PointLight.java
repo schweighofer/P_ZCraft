@@ -1,47 +1,47 @@
 package at.pmzcraft.game.program.engine.render;
 
-import at.pmzcraft.game.program.engine.render.mathematical.vector.Vector;
+import at.pmzcraft.game.program.engine.render.mathematical.vector.vector.Vector4;
 
 public class PointLight {
 
-    private Vector color;
+    private Vector4 color;
 
-    private Vector position;
+    private Vector4 position;
 
     protected float intensity;
 
     private Attenuation attenuation;
     
-    public PointLight(Vector color, Vector position, float intensity) {
+    public PointLight(Vector4 color, Vector4 position, float intensity) {
         attenuation = new Attenuation(1, 0, 0);
         this.color = color;
         this.position = position;
         this.intensity = intensity;
     }
 
-    public PointLight(Vector color, Vector position, float intensity, Attenuation attenuation) {
+    public PointLight(Vector4 color, Vector4 position, float intensity, Attenuation attenuation) {
         this(color, position, intensity);
         this.attenuation = attenuation;
     }
 
     public PointLight(PointLight pointLight) {
-        this((Vector) pointLight.getColor().clone(), (Vector) pointLight.getPosition().clone(),
+        this((Vector4) pointLight.getColor().clone(), (Vector4) pointLight.getPosition().clone(),
                 pointLight.getIntensity(), pointLight.getAttenuation());
     }
 
-    public Vector getColor() {
+    public Vector4 getColor() {
         return color;
     }
 
-    public void setColor(Vector color) {
+    public void setColor(Vector4 color) {
         this.color = color;
     }
 
-    public Vector getPosition() {
+    public Vector4 getPosition() {
         return position;
     }
 
-    public void setPosition(Vector position) {
+    public void setPosition(Vector4 position) {
         this.position = position;
     }
 

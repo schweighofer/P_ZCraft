@@ -4,13 +4,12 @@ package at.pmzcraft.game.program.engine.graphical;
 import at.pmzcraft.game.program.engine.Camera;
 import at.pmzcraft.game.program.engine.render.mathematical.matrix.Matrix;
 import at.pmzcraft.game.program.engine.render.mathematical.matrix.MatrixUtils;
-import at.pmzcraft.game.program.engine.render.mathematical.vector.Vector;
+import at.pmzcraft.game.program.engine.render.mathematical.vector.vector.Vector4;
 import at.pmzcraft.game.program.game.world.gameitem.blocks.Block;
 
 import static at.pmzcraft.game.program.engine.render.mathematical.matrix.MatrixUtils.*;
 import static at.pmzcraft.game.program.engine.render.mathematical.utils.AngleUtils.*;
-import static at.pmzcraft.game.program.engine.render.mathematical.vector.Vector.*;
-import static at.pmzcraft.game.program.engine.render.mathematical.vector.VectorUtils.*;
+import static at.pmzcraft.game.program.engine.render.mathematical.vector.vector.Vector4.*;
 
 public class Transformation {
 
@@ -27,8 +26,8 @@ public class Transformation {
     }
 
     public Matrix getViewMatrix(Camera camera) {
-        Vector cameraPosition = camera.getPosition();
-        Vector cameraRotation = camera.getRotation();
+        Vector4 cameraPosition = camera.getPosition();
+        Vector4 cameraRotation = camera.getRotation();
 
         viewMatrix = multiply(
                   multiply(
@@ -43,8 +42,8 @@ public class Transformation {
     }
 
     public Matrix getModelViewMatrix(Block block, Matrix viewMatrix, Camera camera) {
-        Vector position = block.getPosition();
-        Vector rotation = mathScalarProduct(block.getRotation(), -1);
+        Vector4 position = block.getPosition();
+        Vector4 rotation = (Vector4) block.getRotation().mathScalarProduct(-1);
 
         modelViewMatrix = multiply(
                 // Translation

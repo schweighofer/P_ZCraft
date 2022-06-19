@@ -16,7 +16,7 @@ public class Menu{
     private static int countOfJFrames = 0;
     public String selectedLanguage;
     public static Boolean isHovered = false;
-    public ImageIcon background = new ImageIcon("src/main/resources/menu/Titelbild.jpeg");
+    public ImageIcon background = new ImageIcon("src/main/resources/menu/texture/Titelbild.jpeg");
     public ImageIcon btn1icon;
     public ImageIcon btn2icon;
     public ImageIcon btn3icon;
@@ -28,9 +28,9 @@ public class Menu{
 
 
         selectedLanguage = language;
-        btn1icon = new ImageIcon("src/main/resources/menu/play_"+selectedLanguage+".png");
-        btn2icon = new ImageIcon("src/main/resources/menu/setting_"+selectedLanguage+".png");
-        btn3icon = new ImageIcon("src/main/resources/menu/exit_"+selectedLanguage+".png");
+        btn1icon = new ImageIcon("src/main/resources/menu/texture/play_"+selectedLanguage+".png");
+        btn2icon = new ImageIcon("src/main/resources/menu/texture/setting_"+selectedLanguage+".png");
+        btn3icon = new ImageIcon("src/main/resources/menu/texture/exit_"+selectedLanguage+".png");
 
         JButton btnplay = new JButton(btn1icon);
         btnplay.setBounds(485,285,520,120);
@@ -39,27 +39,22 @@ public class Menu{
         JButton btnexit = new JButton(btn3icon);
         btnexit.setBounds(485,630,520,96);
 
-        btnplay.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
+        btnplay.addActionListener(ae -> {
                 System.out.println("play");
                 PMZCraftLauncher.startGameInstance();
                 f.dispatchEvent(new WindowEvent(f, WindowEvent.WINDOW_CLOSING));
-            }
+
         });
-        btnexit.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
+        btnexit.addActionListener(ae -> {
                 System.out.println("exit");
                 System.exit(0);
-            }
         });
 
-        btnsettings.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
-                btnplay.setIcon(new ImageIcon("src/main/resources/menu/L_"+selectedLanguage+"_1.png"));
+        btnsettings.addActionListener(ae -> {
+
+                btnplay.setIcon(new ImageIcon("src/main/resources/menu/texture/L_"+selectedLanguage+"_1.png"));
                 btnplay.removeActionListener(btnplay.getActionListeners()[0]);
-                btnplay.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
+                btnplay.addActionListener(be -> {
                         if (selectedLanguage.equals("GR")){
                             selectedLanguage = "EN";
                             System.out.println(selectedLanguage);
@@ -74,15 +69,13 @@ public class Menu{
                         }
 
                         f.dispatchEvent(new WindowEvent(f, WindowEvent.WINDOW_CLOSING));
-                        JFrame f = new JFrame("P*ZCraft");
-                        new Menu(f,selectedLanguage, musikant);
-                    }
+                        JFrame frame = new JFrame("P*ZCraft");
+                        new Menu(frame,selectedLanguage, musikant);
+
                 });
-                btnsettings.setIcon(new ImageIcon("src/main/resources/menu/L_"+selectedLanguage+"_2.png"));
+                btnsettings.setIcon(new ImageIcon("src/main/resources/menu/texture/L_"+selectedLanguage+"_2.png"));
                 btnsettings.removeActionListener(btnexit.getActionListeners()[0]);
-                btnsettings.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
+                btnsettings.addActionListener(be -> {
                         if (selectedLanguage.equals("GR")){
                             selectedLanguage = "SR";
                             System.out.println(selectedLanguage);
@@ -96,19 +89,16 @@ public class Menu{
                             System.out.println(selectedLanguage);
                         }
                         f.dispatchEvent(new WindowEvent(f, WindowEvent.WINDOW_CLOSING));
-                        JFrame f = new JFrame("P*ZCraft");
-                        new Menu(f,selectedLanguage, musikant);
-                    }
+                        JFrame frame = new JFrame("P*ZCraft");
+                        new Menu(frame,selectedLanguage, musikant);
+
                 });
-                btnexit.setIcon(new ImageIcon("src/main/resources/menu/zruck_"+selectedLanguage+".png"));
+                btnexit.setIcon(new ImageIcon("src/main/resources/menu/texture/zruck_"+selectedLanguage+".png"));
                 btnexit.removeActionListener(btnexit.getActionListeners()[0]);
-                btnexit.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
+                btnexit.addActionListener(be -> {
                         f.dispatchEvent(new WindowEvent(f, WindowEvent.WINDOW_CLOSING));
-                        JFrame f = new JFrame("P*ZCraft");
-                        new Menu(f,selectedLanguage, musikant);
-                    }
+                        JFrame frame = new JFrame("P*ZCraft");
+                        new Menu(frame,selectedLanguage, musikant);
                 });
 
                 JLabel volumeLabel = new JLabel();
@@ -122,11 +112,8 @@ public class Menu{
                 volumeSlider.setValue(-37);
                 volumeSlider.setBounds(40,285,400,120);
                 f.add(volumeSlider);
-                volumeSlider.addChangeListener(new ChangeListener() {
-                    @Override
-                    public void stateChanged(ChangeEvent e) {
+                volumeSlider.addChangeListener(ce -> {
                         musikant.changeVolume(volumeSlider.getValue());
-                    }
                 });
 
                 //todo: Eingaben fixen. zbs. die nächsten 2 Componente
@@ -160,7 +147,6 @@ public class Menu{
                 //-> ?farbenblindheit (wenn ja einen random filder über die textur legen)
                 //-> ...
                 System.out.println("settings");
-            }
         });
 
         Border emptyBorder = BorderFactory.createEmptyBorder();

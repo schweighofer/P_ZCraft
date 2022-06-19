@@ -1,42 +1,19 @@
 package at.pmzcraft.game.program.engine.render.mathematical.vector;
 
-import at.pmzcraft.game.program.engine.render.mathematical.MathematicalCloneable;
 import at.pmzcraft.game.program.engine.render.mathematical.MathematicalStructure;
 
 import java.util.Arrays;
 
-public class Vector extends MathematicalStructure implements MathematicalCloneable {
-    public static  final int SIZE = 4;
+public abstract class Vector extends MathematicalStructure {
+    public static final int SIZE = -1;
 
-    public static final int X = 0;
-    public static final int Y = 1;
-    public static final int Z = 2;
-    public static final int W = 3;
-
-    private float[] coordinates = new float[4];
+    protected float[] coordinates;
 
     /**
      * @return Nullvector
      */
-    public Vector() {
-        coordinates[X] = 0.0f;
-        coordinates[Y] = 0.0f;
-        coordinates[Z] = 0.0f;
-        coordinates[W] = 1.0f;
-    }
-
-    public Vector(float x, float y, float z, float w) {
-        coordinates[X] = x;
-        coordinates[Y] = y;
-        coordinates[Z] = z;
-        coordinates[W] = w;
-    }
-
-    public Vector(float[] coordinates) {
-        this.coordinates[X] = coordinates[X];
-        this.coordinates[Y] = coordinates[Y];
-        this.coordinates[Z] = coordinates[Z];
-        this.coordinates[W] = 1.0f;
+    public Vector(int size) {
+        coordinates = new float[size];
     }
 
     public float get(int index) {
@@ -51,6 +28,7 @@ public class Vector extends MathematicalStructure implements MathematicalCloneab
         this.coordinates[index] = value;
     }
 
+
     @Override
     public String toString() {
         return "Vector{" +
@@ -61,7 +39,12 @@ public class Vector extends MathematicalStructure implements MathematicalCloneab
 
     @Override
     public MathematicalStructure clone() {
-        return new Vector(Arrays.copyOf(coordinates, coordinates.length));
+        throw new RuntimeException("YOu cant clone this :(");
     }
-}
 
+    public abstract Vector add(Vector v2);
+    public abstract Vector sub(Vector v2);
+    public abstract Vector mul(Vector v2);
+    public abstract Vector div(Vector v2);
+    public abstract Vector mathScalarProduct(float scalar);
+}

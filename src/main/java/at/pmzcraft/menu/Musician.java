@@ -6,9 +6,19 @@ import java.io.IOException;
 import java.net.URL;
 
 public class Musician {
-    private Clip clip = null;
+    private static Clip clip = null;
     private FloatControl gainControl;
-    public Musician() throws LineUnavailableException, UnsupportedAudioFileException, IOException {
+
+    private static Musician musikant;
+
+    public static Musician getInstance() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
+        if (musikant == null) {
+            musikant = new Musician();
+        }
+        return musikant;
+    }
+
+    private Musician() throws LineUnavailableException, UnsupportedAudioFileException, IOException {
         URL url = null;
         url = new File("src/main/resources/menu/SoundHelix-Song-1.wav").toURI().toURL();
 
@@ -25,8 +35,8 @@ public class Musician {
     public void changeVolume(float volume){
         gainControl.setValue(volume);
     }
-    public void aufhoeren(){
+
+    public static void aufhoeren(){
         clip.stop();
     }
-
 }

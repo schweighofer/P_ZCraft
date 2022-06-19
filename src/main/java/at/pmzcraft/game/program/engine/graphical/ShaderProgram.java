@@ -4,13 +4,13 @@ import at.pmzcraft.game.exception.shader.*;
 import at.pmzcraft.game.program.engine.render.Material;
 import at.pmzcraft.game.program.engine.render.PointLight;
 import at.pmzcraft.game.program.engine.render.mathematical.matrix.Matrix;
-import at.pmzcraft.game.program.engine.render.mathematical.vector.Vector;
+import at.pmzcraft.game.program.engine.render.mathematical.vector.vector.Vector4;
 import org.lwjgl.system.MemoryStack;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static at.pmzcraft.game.program.engine.render.mathematical.vector.Vector.*;
+import static at.pmzcraft.game.program.engine.render.mathematical.vector.vector.Vector4.*;
 import static org.lwjgl.opengl.GL20.*;
 
 // Shader handling for rendering
@@ -60,7 +60,7 @@ public class ShaderProgram {
         glUniform1f(uniforms.get(uniformName), value);
     }
 
-    public void setUniform(String uniformName, Vector value) {
+    public void setUniform(String uniformName, Vector4 value) {
         glUniform3f(uniforms.get(uniformName), value.get(X), value.get(Y), value.get(Z));
     }
 

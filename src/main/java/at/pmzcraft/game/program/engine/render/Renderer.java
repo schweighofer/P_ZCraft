@@ -8,8 +8,7 @@ import at.pmzcraft.game.program.engine.graphical.ShaderProgram;
 import at.pmzcraft.game.program.engine.graphical.Transformation;
 import at.pmzcraft.game.program.engine.render.mathematical.matrix.Matrix;
 import at.pmzcraft.game.program.engine.render.mathematical.matrix.MatrixUtils;
-import at.pmzcraft.game.program.engine.render.mathematical.vector.Vector;
-import at.pmzcraft.game.program.engine.render.mathematical.vector.VectorUtils;
+import at.pmzcraft.game.program.engine.render.mathematical.vector.vector.Vector4;
 import at.pmzcraft.game.program.engine.utils.ResourceLoader;
 import at.pmzcraft.game.program.game.world.gameitem.blocks.Block;
 
@@ -18,7 +17,7 @@ import static at.pmzcraft.game.program.engine.render.mathematical.utils.AngleUti
 import java.io.IOException;
 import java.nio.file.Path;
 
-import static at.pmzcraft.game.program.engine.render.mathematical.vector.Vector.*;
+import static at.pmzcraft.game.program.engine.render.mathematical.vector.vector.Vector4.*;
 import static org.lwjgl.opengl.GL11.*;
 public class Renderer {
 
@@ -63,7 +62,7 @@ public class Renderer {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
-    public void render(Window window, Camera camera, Block[] blocks,  Vector ambientLight, PointLight pointLight) {
+    public void render(Window window, Camera camera, Block[] blocks, Vector4 ambientLight, PointLight pointLight) {
         clear();
 
         if (window.wasResized()) {
@@ -84,8 +83,8 @@ public class Renderer {
         shaderProgram.setUniform("l_specularPower", specularPower);
         // Get a copy of the light object and transform its position to view coordinates
         PointLight currPointLight = new PointLight(pointLight);
-        Vector lightPos = currPointLight.getPosition();
-        Vector aux = (Vector) lightPos.clone();
+        Vector4 lightPos = currPointLight.getPosition();
+        Vector4 aux = (Vector4) lightPos.clone();
         aux.set(W, 1);
         // TODO mul nachmachen
         aux = MatrixUtils.multiplyMatrixVector(viewMatrix, aux);

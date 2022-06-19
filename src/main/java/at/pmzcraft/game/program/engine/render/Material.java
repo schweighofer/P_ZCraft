@@ -1,17 +1,17 @@
 package at.pmzcraft.game.program.engine.render;
 
 
-import at.pmzcraft.game.program.engine.render.mathematical.vector.Vector;
+import at.pmzcraft.game.program.engine.render.mathematical.vector.vector.Vector4;
 
 public class Material {
 
-    private static final Vector DEFAULT_COLOUR = new Vector(1.0f, 1.0f, 1.0f, 1.0f);
+    private static final Vector4 DEFAULT_COLOUR = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 
-    private Vector ambientColour;
+    private Vector4 ambientColour;
 
-    private Vector diffuseColour;
+    private Vector4 diffuseColour;
 
-    private Vector specularColour;
+    private Vector4 specularColour;
 
     private float reflectance;
 
@@ -25,7 +25,7 @@ public class Material {
         this.reflectance = 0;
     }
 
-    public Material(Vector colour, float reflectance) {
+    public Material(Vector4 colour, float reflectance) {
         this(colour, colour, colour, null, reflectance);
     }
 
@@ -37,7 +37,7 @@ public class Material {
         this(DEFAULT_COLOUR, DEFAULT_COLOUR, DEFAULT_COLOUR, texture, reflectance);
     }
 
-    public Material(Vector ambientColour, Vector diffuseColour, Vector specularColour, Texture texture, float reflectance) {
+    public Material(Vector4 ambientColour, Vector4 diffuseColour, Vector4 specularColour, Texture texture, float reflectance) {
         this.ambientColour = ambientColour;
         this.diffuseColour = diffuseColour;
         this.specularColour = specularColour;
@@ -45,27 +45,27 @@ public class Material {
         this.reflectance = reflectance;
     }
 
-    public Vector getAmbientColour() {
+    public Vector4 getAmbientColour() {
         return ambientColour;
     }
 
-    public void setAmbientColour(Vector ambientColour) {
+    public void setAmbientColour(Vector4 ambientColour) {
         this.ambientColour = ambientColour;
     }
 
-    public Vector getDiffuseColour() {
+    public Vector4 getDiffuseColour() {
         return diffuseColour;
     }
 
-    public void setDiffuseColour(Vector diffuseColour) {
+    public void setDiffuseColour(Vector4 diffuseColour) {
         this.diffuseColour = diffuseColour;
     }
 
-    public Vector getSpecularColour() {
+    public Vector4 getSpecularColour() {
         return specularColour;
     }
 
-    public void setSpecularColour(Vector specularColour) {
+    public void setSpecularColour(Vector4 specularColour) {
         this.specularColour = specularColour;
     }
 

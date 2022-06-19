@@ -1,16 +1,16 @@
 package at.pmzcraft.game.program.engine.render.mathematical.matrix;
 
-import at.pmzcraft.game.program.engine.render.mathematical.vector.Vector;
+import at.pmzcraft.game.program.engine.render.mathematical.vector.vector.Vector4;
 
 import static at.pmzcraft.game.program.engine.render.mathematical.matrix.Matrix.SIZE;
 import static at.pmzcraft.game.program.engine.render.mathematical.utils.AngleUtils.*;
-import static at.pmzcraft.game.program.engine.render.mathematical.vector.Vector.*;
+import static at.pmzcraft.game.program.engine.render.mathematical.vector.vector.Vector4.*;
 import static at.pmzcraft.game.program.engine.render.mathematical.utils.AlgebraUtils.*;
 
 public class MatrixUtils {
 
-    public static Vector multiplyMatrixVector(Matrix m, Vector v) {
-        Vector o = new Vector();
+    public static Vector4 multiplyMatrixVector(Matrix m, Vector4 v) {
+        Vector4 o = new Vector4();
         float sum;
         for (int col = 0; col < SIZE; col++) {
             sum = 0.0f;
@@ -43,7 +43,7 @@ public class MatrixUtils {
         return m;
     }
 
-    public static Matrix createTranslationMatrix(Vector offset) {
+    public static Matrix createTranslationMatrix(Vector4 offset) {
         Matrix m = createIdentityMatrix();
         m.set(0, 3, offset.get(X));
         m.set(1, 3, offset.get(Y));

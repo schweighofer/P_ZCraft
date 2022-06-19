@@ -6,8 +6,7 @@ import at.pmzcraft.game.program.engine.Camera;
 import at.pmzcraft.game.program.engine.Window;
 import at.pmzcraft.game.program.engine.input.KeyboardInputHandler;
 import at.pmzcraft.game.program.engine.render.*;
-import at.pmzcraft.game.program.engine.render.mathematical.vector.Vector;
-import at.pmzcraft.game.program.engine.render.mathematical.vector.VectorUtils;
+import at.pmzcraft.game.program.engine.render.mathematical.vector.vector.Vector4;
 import at.pmzcraft.game.program.engine.utils.OBJLoader;
 import at.pmzcraft.game.program.game.world.gameitem.blocks.Block;
 import at.pmzcraft.game.program.game.world.gameitem.blocks.blocktypes.*;
@@ -17,8 +16,8 @@ import java.nio.file.Path;
 
 public class PMZGame {
 
-    private Vector cameraPosition;
-    private Vector cameraRotation;
+    private Vector4 cameraPosition;
+    private Vector4 cameraRotation;
     private final Camera camera;
 
     private static final float CAMERA_STEP_SENSITIVITY = 0.05f;
@@ -29,14 +28,14 @@ public class PMZGame {
     private final Renderer renderer;
     private Block[] blocks;
 
-    private Vector ambientLight;
+    private Vector4 ambientLight;
     private PointLight pointLight;
 
     public PMZGame() {
         renderer = new Renderer();
         camera = new Camera();
-        cameraPosition = new Vector();
-        cameraRotation = new Vector();
+        cameraPosition = new Vector4();
+        cameraRotation = new Vector4();
         keyboardInputHandler = new KeyboardInputHandler(this);
     }
 
@@ -44,7 +43,7 @@ public class PMZGame {
         renderer.init();
         float reflectance = 1;
         Texture texture = new Texture(Path.of("src", "main", "resources", "game", "texture", "texture_map.png"));
-        Mesh mesh = OBJLoader.loadMesh(Path.of("src", "main", "resources", "game", "model", "bunny.obj"));
+        Mesh mesh = OBJLoader.loadMesh(Path.of("src", "main", "resources", "game", "model", "cube.obj"));
         Material material = new Material(texture, reflectance);
         mesh.setMaterial(material);
 
@@ -67,9 +66,9 @@ public class PMZGame {
         //blocks = new Block[] {b1, b2, b3, b4};
         blocks = new Block[] {b1};
 
-        ambientLight = new Vector(0.3f, 0.3f, 0.3f, 0);
-        Vector lightColour = new Vector(1, 1, 1, 0);
-        Vector lightPosition = new Vector(0, 0, 1, 0);
+        ambientLight = new Vector4(0.3f, 0.3f, 0.3f, 0);
+        Vector4 lightColour = new Vector4(1, 1, 1, 0);
+        Vector4 lightPosition = new Vector4(0, 0, 1, 0);
         float lightIntensity = 1.0f;
         pointLight = new PointLight(lightColour, lightPosition, lightIntensity);
         PointLight.Attenuation att = new PointLight.Attenuation(0.0f, 0.0f, 1.0f);
@@ -82,8 +81,8 @@ public class PMZGame {
     }
 
     public void update(float interval) {
-        camera.movePosition(VectorUtils.mathScalarProduct(cameraPosition, CAMERA_STEP_SENSITIVITY));
-        camera.moveRotation(VectorUtils.mathScalarProduct(cameraRotation, CAMERA_ROTATION_SENSITIVITY));
+        camera.movePosition((Vector4) cameraPosition.mathScalarProduct(CAMERA_STEP_SENSITIVITY));
+        camera.moveRotation((Vector4) cameraRotation.mathScalarProduct(CAMERA_ROTATION_SENSITIVITY));
     }
 
     public void render(Window window) {
@@ -97,7 +96,7 @@ public class PMZGame {
         }
     }
 
-    public Vector getCameraPosition() {
+    public Vector4 getCameraPosition() {
         return cameraPosition;
     }
 

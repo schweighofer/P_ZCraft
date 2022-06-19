@@ -1,27 +1,27 @@
 package at.pmzcraft.game.program.game.world.gameitem.blocks;
 
 import at.pmzcraft.game.program.engine.render.Mesh;
-import at.pmzcraft.game.program.engine.render.mathematical.vector.Vector;
+import at.pmzcraft.game.program.engine.render.mathematical.vector.vector.Vector4;
 
-import static at.pmzcraft.game.program.engine.render.mathematical.vector.Vector.*;
+import static at.pmzcraft.game.program.engine.render.mathematical.vector.vector.Vector4.*;
 
 public abstract class Block {
     protected BlockType type = BlockType.UNKNOWN;
 
     private final Mesh mesh;
 
-    private final Vector position;
+    private final Vector4 position;
     private float scale;
-    private final Vector rotation;
+    private final Vector4 rotation;
 
     public Block(Mesh mesh) {
         this.mesh = mesh;
-        position = new Vector();
+        position = new Vector4();
         scale = 1;
-        rotation = new Vector();
+        rotation = new Vector4();
     }
 
-    public Vector getPosition() {
+    public Vector4 getPosition() {
         return position;
     }
 
@@ -39,7 +39,7 @@ public abstract class Block {
         this.scale = scale;
     }
 
-    public Vector getRotation() {
+    public Vector4 getRotation() {
         return rotation;
     }
 

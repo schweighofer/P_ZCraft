@@ -7,6 +7,8 @@ import at.pmzcraft.game.exception.general.WindowException;
 import at.pmzcraft.game.program.engine.utils.Synchronizer;
 import at.pmzcraft.game.program.engine.utils.Timer;
 import at.pmzcraft.game.program.game.PMZGame;
+import at.pmzcraft.menu.Master;
+import at.pmzcraft.menu.Musician;
 import org.lwjgl.Version;
 
 import java.awt.*;
@@ -54,9 +56,12 @@ public class PMZEngine implements Runnable {
             // Cleanup the window after the game is done
             window.close();
 
-            //Menu.setVisibleAgain();
-
-            // TODO: return to menu?
+            // Stop musikant
+            Thread thisThread = Thread.currentThread();
+            System.out.println(thisThread.getName() + " goes bye-bye now");
+            thisThread.interrupt();
+            // Program goes bye-bye >:)
+            Master.stopProgram();
         }
     }
 

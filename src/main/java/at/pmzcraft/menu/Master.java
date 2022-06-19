@@ -12,7 +12,7 @@ public class Master {
         JFrame f = new JFrame("P*ZCraft");
         Musician musikant = null;
         try {
-            musikant = new Musician();
+            musikant = Musician.getInstance();
         } catch (LineUnavailableException e) {
             e.printStackTrace();
         } catch (UnsupportedAudioFileException e) {
@@ -21,5 +21,10 @@ public class Master {
             e.printStackTrace();
         }
         new Menu(f,"EN", musikant);
+    }
+
+    public static void stopProgram() {
+        Musician.aufhoeren();
+        System.exit(0);
     }
 }

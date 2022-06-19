@@ -2,23 +2,23 @@ package at.pmzcraft.game.program.engine.utils;
 
 
 import at.pmzcraft.game.program.engine.render.Mesh;
-import at.pmzcraft.game.program.engine.render.mathematical.vector.Vector;
+import at.pmzcraft.game.program.engine.render.mathematical.vector.vector.Vector4;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-import static at.pmzcraft.game.program.engine.render.mathematical.vector.Vector.*;
+import static at.pmzcraft.game.program.engine.render.mathematical.vector.vector.Vector4.*;
 
 public class OBJLoader {
 
     public static Mesh loadMesh(Path fileName) throws IOException {
         List<String> lines = ResourceLoader.readAllLines(fileName);
         
-        List<Vector> vertices = new ArrayList<>();
-        List<Vector> textures = new ArrayList<>();
-        List<Vector> normals = new ArrayList<>();
+        List<Vector4> vertices = new ArrayList<>();
+        List<Vector4> textures = new ArrayList<>();
+        List<Vector4> normals = new ArrayList<>();
         List<Face> faces = new ArrayList<>();
 
         for (String line : lines) {
@@ -26,7 +26,7 @@ public class OBJLoader {
             switch (tokens[0]) {
                 case "v":
                     // Geometric vertex
-                    Vector vec3 = new Vector(
+                    Vector4 vec3 = new Vector4(
                             Float.parseFloat(tokens[1]),
                             Float.parseFloat(tokens[2]),
                             Float.parseFloat(tokens[3]),
@@ -35,7 +35,7 @@ public class OBJLoader {
                     break;
                 case "vt":
                     // Texture coordinate
-                    Vector vec2 = new Vector(
+                    Vector4 vec2 = new Vector4(
                             Float.parseFloat(tokens[1]),
                             Float.parseFloat(tokens[2]),
                             0,
@@ -44,7 +44,7 @@ public class OBJLoader {
                     break;
                 case "vn":
                     // Vertex normal
-                    Vector vec3Norm = new Vector(
+                    Vector4 vec3Norm = new Vector4(
                             Float.parseFloat(tokens[1]),
                             Float.parseFloat(tokens[2]),
                             Float.parseFloat(tokens[3]),
@@ -64,13 +64,13 @@ public class OBJLoader {
     }
 
     private static Mesh reorderLists
-            (List<Vector> posList, List<Vector> textCoordList, List<Vector> normList, List<Face> facesList) {
+            (List<Vector4> posList, List<Vector4> textCoordList, List<Vector4> normList, List<Face> facesList) {
 
         List<Integer> indices = new ArrayList<>();
         // Create position array in the order it has been declared
         float[] posArr = new float[posList.size() * 3];
         int i = 0;
-        for (Vector pos : posList) {
+        for (Vector4 pos : posList) {
             posArr[i * 3] = pos.get(X);
             posArr[i * 3 + 1] = pos.get(Y);
             posArr[i * 3 + 2] = pos.get(Z);
@@ -93,8 +93,8 @@ public class OBJLoader {
     }
 
     private static void processFaceVertex
-            (IdxGroup indices, List<Vector> textCoordList, List<Vector> normList, List<Integer> indicesList,
-            float[] texCoordArr, float[] normArr) {
+            (IdxGroup indices, List<Vector4> textCoordList, List<Vector4> normList, List<Integer> indicesList,
+             float[] texCoordArr, float[] normArr) {
 
         // Set index for vertex coordinates
         int posIndex = indices.idxPos;
@@ -102,13 +102,13 @@ public class OBJLoader {
 
         // Reorder texture coordinates
         if (indices.idxTextCoord >= 0) {
-            Vector textCoord = textCoordList.get(indices.idxTextCoord);
+            Vector4 textCoord = textCoordList.get(indices.idxTextCoord);
             texCoordArr[posIndex * 2] = textCoord.get(X);
             texCoordArr[posIndex * 2 + 1] = 1 - textCoord.get(Y);
         }
         if (indices.idxVecNormal >= 0) {
             // Reorder vectornormals
-            Vector vecNorm = normList.get(indices.idxVecNormal);
+            Vector4 vecNorm = normList.get(indices.idxVecNormal);
             normArr[posIndex * 3] = vecNorm.get(X);
             normArr[posIndex * 3 + 1] = vecNorm.get(Y);
             normArr[posIndex * 3 + 2] = vecNorm.get(Z);
