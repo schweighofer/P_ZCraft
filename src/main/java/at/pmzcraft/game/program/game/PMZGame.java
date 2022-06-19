@@ -131,10 +131,6 @@ public class PMZGame {
         createBlock(2,1.5f,0);
     }
 
-    public void afterStartingAnimation() {
-        blocks.clear();
-    }
-
     public void createBlock(float x, float y, float z) {
         Block block = new GrassBlock();
         block.setScale(0.25f);

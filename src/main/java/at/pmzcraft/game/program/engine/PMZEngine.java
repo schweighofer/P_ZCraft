@@ -121,12 +121,13 @@ public class PMZEngine implements Runnable {
             render();
             logicImplementation.sleep(10);
         }
-        logicImplementation.sleep(2000);
-        logicImplementation.afterStartingAnimation();
+        logicImplementation.sleep(500);
 
-        logicImplementation.createBlock(0,0,0);
-        logicImplementation.createBlock(0.5f,0,0);
-        logicImplementation.createBlock(0.5f,0.5f,-0.5f);
-        logicImplementation.createBlock(0,0.5f,-0.5f);
+        logicImplementation.createBlock(0,0,2.5f);
+        logicImplementation.createBlock(0.5f,0,2.5f);
+        logicImplementation.createBlock(0.5f,0.5f,2);
+        logicImplementation.createBlock(0.5f,0,2);
+        logicImplementation.createBlock(0,0.5f,2);
+        logicImplementation.createBlock(0,0,2);
     }
 }
