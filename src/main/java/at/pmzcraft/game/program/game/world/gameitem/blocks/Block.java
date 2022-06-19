@@ -30,6 +30,12 @@ public abstract class Block {
         this.position.set(Z, z);
     }
 
+    public void setPosition(Vector3 position) {
+        for (int i = 0; i < position.SIZE; i++) {
+            this.position.set(i, position.get(i));
+        }
+    }
+
     public float getScale() {
         return scale;
     }

@@ -25,7 +25,7 @@ public class PMZGame {
     private Vector3 cameraRotation;
     private final Camera camera;
 
-    private static final float CAMERA_STEP_SENSITIVITY = 0.05f;
+    private static final float CAMERA_STEP_SENSITIVITY = 0.1f;
     private static final float CAMERA_ROTATION_SENSITIVITY = 0.2f;
 
     private final KeyboardInputHandler keyboardInputHandler;
@@ -51,28 +51,7 @@ public class PMZGame {
         CachedMaterial.init();
         CachedMesh.init(PropertyLoader.getPath("mesh_path"));
 
-        Block b1 = new GrassBlock();
-        b1.setScale(0.25f);
-        b1.setPosition(0, -0.5f, -2.5f);
-
-        Block b2 = new GrassBlock();
-        b2.setScale(0.25f);
-        b2.setPosition(0.5f, 0, -2);
-
-        Block b3 = new GrassBlock();
-        b3.setScale(0.25f);
-        b3.setPosition(0, 0.5f, -2.5f);
-
-        Block b4 = new GrassBlock();
-        b4.setScale(0.25f);
-        b4.setPosition(0.5f, 0.5f, -2.5f);
-
         blocks = new ArrayList<>();
-
-        blocks.add(b1);
-        blocks.add(b2);
-        blocks.add(b3);
-        blocks.add(b4);
 
         ambientLight = new Vector3(0.3f, 0.3f, 0.3f);
         Vector3 lightColour = new Vector3(1, 1, 1);
@@ -81,6 +60,7 @@ public class PMZGame {
         pointLight = new PointLight(lightColour, lightPosition, lightIntensity);
         PointLight.Attenuation att = new PointLight.Attenuation(0.0f, 0.0f, 1.0f);
         pointLight.setAttenuation(att);
+
     }
 
     public void input(Window window) {
@@ -110,5 +90,63 @@ public class PMZGame {
 
     public Camera getCamera() {
         return camera;
+    }
+
+
+
+
+
+    ////// STARTING ANIMATION
+
+    public void startingAnimation() {
+
+        // P
+        createBlock(-2,-0.5f,0);
+        createBlock(-2,0,0);
+        createBlock(-2,0.5f,0);
+        createBlock(-2,1,0);
+        createBlock(-2,1.5f,0);
+        createBlock(-1.5f,1.5f,0);
+        createBlock(-1,1.5f,0);
+        createBlock(-1,1,0);
+        createBlock(-1,0.5f,0);
+        createBlock(-1.5f,0.5f,0);
+
+        // *
+        createBlock(0,1.5f,0);
+        createBlock(-0.35f,1.25f,0);
+        createBlock(0.35f,1.25f,0);
+        createBlock(0.25f,0.8f,0);
+        createBlock(-0.25f,0.8f,0);
+
+        // Z
+        createBlock(1,-0.5f,0);
+        createBlock(1.5f,-0.5f,0);
+        createBlock(2,-0.5f,0);
+        createBlock(2,0,0);
+        createBlock(1.5f,0.5f,0);
+        createBlock(1,1,0);
+        createBlock(1,1.5f,0);
+        createBlock(1.5f,1.5f,0);
+        createBlock(2,1.5f,0);
+    }
+
+    public void afterStartingAnimation() {
+        blocks.clear();
+    }
+
+    public void createBlock(float x, float y, float z) {
+        Block block = new GrassBlock();
+        block.setScale(0.25f);
+        block.setPosition(x, y, z);
+        blocks.add(block);
+    }
+
+    public void sleep(int millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

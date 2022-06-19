@@ -22,7 +22,7 @@ import static at.pmzcraft.game.program.engine.render.mathematical.vector.vector.
 import static org.lwjgl.opengl.GL11.*;
 public class Renderer {
 
-    private static final float FOV = toRadians(60);
+    private static final float FOV = toRadians(90);
     private static final float Z_NEAR = 0.01f;
     private static final float Z_FAR = 1000f;
 

@@ -4,6 +4,7 @@ import at.pmzcraft.game.exception.PMZException;
 import at.pmzcraft.game.exception.general.ShaderException;
 import at.pmzcraft.game.exception.general.TextureException;
 import at.pmzcraft.game.exception.general.WindowException;
+import at.pmzcraft.game.program.engine.render.mathematical.vector.vector.Vector3;
 import at.pmzcraft.game.program.engine.utils.Synchronizer;
 import at.pmzcraft.game.program.engine.utils.Timer;
 import at.pmzcraft.game.program.game.PMZGame;
@@ -42,6 +43,10 @@ public class PMZEngine implements Runnable {
 
         try {
             init();
+
+            /// STARTING ANIMATION
+            startingAnimation();
+
             loop();
         } catch (PMZException | IOException | InterruptedException e) {
             e.printStackTrace();
@@ -105,5 +110,23 @@ public class PMZEngine implements Runnable {
 
     public void cleanup() {
         logicImplementation.cleanup();
+    }
+
+
+    ////// STARTING ANIMATION
+    private void startingAnimation() {
+        logicImplementation.startingAnimation();
+        for (int i = 0; i < 100; i++) {
+            logicImplementation.getCamera().movePosition(new Vector3(0,-0.02f,-0.125f));
+            render();
+            logicImplementation.sleep(10);
+        }
+        logicImplementation.sleep(2000);
+        logicImplementation.afterStartingAnimation();
+
+        logicImplementation.createBlock(0,0,0);
+        logicImplementation.createBlock(0.5f,0,0);
+        logicImplementation.createBlock(0.5f,0.5f,-0.5f);
+        logicImplementation.createBlock(0,0.5f,-0.5f);
     }
 }
